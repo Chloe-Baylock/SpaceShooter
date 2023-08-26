@@ -34,24 +34,18 @@ class Player():
 
       self.setX(newX * 1)
       self.setY(newY * 1)
-      
+
   def unitVector(self, mousePos):
     x = mousePos[0] - self.getX()
     y = mousePos[1] - self.getY()
-
-    # x = direction[0]
-    # y = direction[1]
+    c = math.sqrt(x ** 2 + y ** 2)
 
     if (x == 0):
+      # no division by 0
       return ((0,0))
-    
-    alpha = math.atan(y/x)
-    if (x < 0 and y < 0):
-      alpha += math.pi
-    elif (x < 0 and y > 0):
-      alpha += math.pi
-    unitX = math.cos(alpha)
-    unitY = math.sin(alpha)
+
+    unitX = x/c
+    unitY = y/c
 
     return ((unitX, unitY))
 
