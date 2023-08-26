@@ -48,6 +48,20 @@ class Player():
     unitY = y/c
 
     return ((unitX, unitY))
+  
+  def getAlpha(self, mousePos):
+    x = mousePos[0] - self.getX()
+    y = mousePos[1] - self.getY()
+
+    
+    if (x == 0):
+      return
+
+    alpha = math.atan(y/x)
+    if x < 0:
+      alpha += math.pi
+
+    return -alpha
 
   def setX(self, val):
     self.x = val
@@ -83,7 +97,10 @@ while running:
     if event.type == pygame.QUIT:
       running = False
     elif event.type == pygame.MOUSEBUTTONDOWN:
-      p.setIsSwinging(True)
+      p.setIsSwinging(not p.isSwinging)
+    elif event.type == pygame.KEYDOWN:
+        if event.key == pygame.K_a:
+          print(p.getAlpha(pygame.mouse.get_pos()))
 
   # fill the screen with a color to wipe away anything from last frame
   screen.fill("black")
@@ -92,7 +109,10 @@ while running:
   if p.getIsSwinging():
     x = p.getX() + p.unitVector(mousePosition)[0] * pixelSize
     y = p.getY() + p.unitVector(mousePosition)[1] * pixelSize
-    pygame.draw.rect(screen, "orange", (x,y, 64, 64))
+    alpha = p.getAlpha(mousePosition)
+    # pygame.draw.rect(screen, "orange", (x,y, 64, 64))
+    # pygame.draw.arc(screen,"orange",(x, y, 640, 640), alpha - (math.pi/3), alpha + (math.pi/3))
+    pygame.draw.arc(screen,"orange",(x, y, 64, 64), alpha - (math.pi/3), alpha + (math.pi/3), 64)
   else:
     p.move(mousePosition)
 
