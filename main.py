@@ -5,17 +5,47 @@ import math
 
 # pygame setup
 
-DISPLAYSURF = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
-# screen = pygame.display.set_mode((width, height))
-
 width = 1088
 height = 736
+size = 32
+# things move by 32's
+
+# DISPLAYSURF = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+DISPLAYSURF = pygame.display.set_mode((width + size*2, height + size*2))
+# screen = pygame.display.set_mode((width, height))
+
 pygame.init()
 clock = pygame.time.Clock()
 running = True
 
-size = 32
-# things move by 32's
+
+def unitVector (yourX,yourY,mousePos):
+  xVec = mousePos[0] - yourX
+  yVec = mousePos[1] - yourY
+  hypotenuse = math.sqrt(xVec ** 2 + yVec ** 2)
+
+  if (xVec == 0):
+    #no division by 0
+    return ((0,0))
+
+  unitX = xVec/hypotenuse
+  unitY = yVec/hypotenuse
+
+  return ((unitX, unitY))
+
+def getAlpha(yourX, yourY, mousePos):
+  x = mousePos[0] - yourX
+  y = mousePos[1] - yourY
+
+  
+  if (x == 0):
+    return
+
+  alpha = math.atan(y/x)
+  if x < 0:
+    alpha += math.pi
+
+  return alpha
 
 class Player():
   def __init__(self):
@@ -32,7 +62,7 @@ class Player():
       return
       # if already super close don't move
 
-    unitMove = self.unitVector(mousePos)
+    unitMove = unitVector(self.getX(), self.getY(),mousePos)
 
     if (mousePos[0] and mousePos[1]):
       #check that it is not empty
@@ -41,34 +71,6 @@ class Player():
 
       self.setX(newX * 1)
       self.setY(newY * 1)
-
-  def unitVector(self, mousePos):
-    x = mousePos[0] - self.getX()
-    y = mousePos[1] - self.getY()
-    c = math.sqrt(x ** 2 + y ** 2)
-
-    if (x == 0):
-      # no division by 0
-      return ((0,0))
-
-    unitX = x/c
-    unitY = y/c
-
-    return ((unitX, unitY))
-  
-  def getAlpha(self, mousePos):
-    x = mousePos[0] - self.getX()
-    y = mousePos[1] - self.getY()
-
-    
-    if (x == 0):
-      return
-
-    alpha = math.atan(y/x)
-    if x < 0:
-      alpha += math.pi
-
-    return -alpha
 
   def setX(self, val):
     self.x = val
@@ -88,6 +90,16 @@ class Player():
   def swing(self, weapon):
     self.isSwinging = True
   
+  def swingBody(self, mousePos):
+    unitV = unitVector(self.getX(),self.getY(), mousePos)
+    alpha = getAlpha(self.getX(), self.getY(), mousePos)
+
+    return [( round(unitV[0] * 4) + round(self.getX()/size), round(unitV[1] * 4) + round(self.getY()/size))]
+
+
+
+
+
   def getIsSwinging(self):
     return p.isSwinging
 
@@ -99,6 +111,7 @@ class Enemy():
     self.x = width/size
     self.x = random.randint(1, width/size)
     self.y = random.randint(1, height/size)
+    self.color = "lime"
 
   def getX(self):
     return self.x
@@ -106,6 +119,9 @@ class Enemy():
   def getY(self):
     return self.y
   
+  def center(self):
+    return ((self.getX() - .5, self.getY() - .5))
+
   def reset(self):
     self.x = random.randint(1, width/size)
     self.y = random.randint(1, height/size)
@@ -124,35 +140,43 @@ while running:
     elif event.type == pygame.MOUSEBUTTONDOWN:
       p.setIsSwinging(not p.isSwinging)
     elif event.type == pygame.KEYDOWN:
-        if event.key == pygame.K_a:
-          print(p.getAlpha(pygame.mouse.get_pos()))
         if event.key == pygame.K_r:
           e.reset()
-          print(e.x)
-          print(e.y)
+        if event.key == pygame.K_a:
+          print(p.swingBody(mousePosition))
+          print(e.getX())
+          print(e.getY())
         if event.key == pygame.K_ESCAPE:
           running = False
+
 
   # fill the screen with a color to wipe away anything from last frame
   DISPLAYSURF.fill("black")
 
   mousePosition = pygame.mouse.get_pos()
   if p.getIsSwinging():
-    alpha = p.getAlpha(mousePosition)
+    alpha = -1 * getAlpha(p.getX(), p.getY(), mousePosition)
     myRectangle = pygame.Rect(p.getX() - size * 8, p.getY() - size * 8, size * 16, size * 16)
     # pygame.draw.rect(screen,"purple",myRectangle)
     pygame.draw.arc(DISPLAYSURF,"orange",myRectangle, alpha - (math.pi/9), alpha + (math.pi/9), size * 4)
     # pygame.draw.arc(screen,"orange",(x-64, y-64, 356, 356), alpha - (math.pi/6), alpha + (math.pi/6), 64)
+    x = p.swingBody(mousePosition)[0][0]
+    y = p.swingBody(mousePosition)[0][1]
+    
+    pygame.draw.rect(DISPLAYSURF, "purple",((x*size,y*size,size,size)))
+    if (e.getX(), e.getY()) in p.swingBody(mousePosition):
+      e.color = "gray"
+    else:
+      e.color = "lime"
   else:
     p.move(mousePosition)
 
+
+
   # RENDER YOUR GAME HERE
-  # pygame.draw.rect(screen, "white", (p.getX() - size * 2, p.getY() - size * 2, 64, 64))
   pygame.draw.rect(DISPLAYSURF, "white", (p.center()[0], p.center()[1], size, size))
-  pygame.draw.rect(DISPLAYSURF, "lime", (e.getX() * size, e.getY() * size, size, size))
+  pygame.draw.rect(DISPLAYSURF, e.color, (e.getX() *size, e.getY() * size, size, size))
   pygame.draw.rect(DISPLAYSURF, "white", (0,0,width+size * 2,height+size * 2),size)
-  # pygame.draw.rect(DISPLAYSURF, "pink", (0,0,width,height),1)
-  # pygame.draw.rect(screen, "pink", (mousePosition[0] - size/2,mousePosition[1] - size/2, size, size))
 
   # flip() the display to put your work on screen
   pygame.display.flip()
