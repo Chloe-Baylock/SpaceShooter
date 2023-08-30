@@ -8,8 +8,8 @@ screen = pygame.display.set_mode((1280, 720))
 clock = pygame.time.Clock()
 running = True
 
-pixelSize = 16
-
+size = 32
+#size
 
 class Player():
   def __init__(self):
@@ -22,15 +22,15 @@ class Player():
     dirX = mousePos[0] - self.getX()
     dirY = mousePos[1] - self.getY()
 
-    if abs(dirX) <= pixelSize and abs(dirY) <= pixelSize:
+    if abs(dirX) <= size and abs(dirY) <= size:
       return
 
     unitMove = self.unitVector(mousePos)
 
     if (mousePos[0] and mousePos[1]):
       #check that it is not empty
-      newX = unitMove[0] * pixelSize + self.getX()
-      newY = unitMove[1] * pixelSize + self.getY()
+      newX = unitMove[0] * size + self.getX()
+      newY = unitMove[1] * size + self.getY()
 
       self.setX(newX * 1)
       self.setY(newY * 1)
@@ -75,6 +75,9 @@ class Player():
   def getY(self):
     return self.y
 
+  def center(self):
+    return ((self.getX() - size/2, self.getY() - size/2))
+
   def swing(self, weapon):
     self.isSwinging = True
   
@@ -107,23 +110,23 @@ while running:
 
   mousePosition = pygame.mouse.get_pos()
   if p.getIsSwinging():
-    x = p.getX() + p.unitVector(mousePosition)[0] * pixelSize
-    y = p.getY() + p.unitVector(mousePosition)[1] * pixelSize
     alpha = p.getAlpha(mousePosition)
-    # pygame.draw.rect(screen, "orange", (x,y, 64, 64))
-    # pygame.draw.arc(screen,"orange",(x, y, 640, 640), alpha - (math.pi/3), alpha + (math.pi/3))
-    pygame.draw.arc(screen,"orange",(x, y, 64, 64), alpha - (math.pi/3), alpha + (math.pi/3), 64)
+    myRectangle = pygame.Rect(p.getX() - size * 8, p.getY() - size * 8, size * 16, size * 16)
+    # pygame.draw.rect(screen,"purple",myRectangle)
+    pygame.draw.arc(screen,"orange",myRectangle, alpha - (math.pi/9), alpha + (math.pi/9), size * 4)
+    # pygame.draw.arc(screen,"orange",(x-64, y-64, 356, 356), alpha - (math.pi/6), alpha + (math.pi/6), 64)
   else:
     p.move(mousePosition)
 
   # RENDER YOUR GAME HERE
-  pygame.draw.rect(screen, "white", (p.getX(), p.getY(), 64, 64))
-  pygame.draw.rect(screen, "pink", (mousePosition[0],mousePosition[1], 64, 64))
+  # pygame.draw.rect(screen, "white", (p.getX() - size * 2, p.getY() - size * 2, 64, 64))
+  pygame.draw.rect(screen, "white", (p.center()[0], p.center()[1], size, size))
+  pygame.draw.rect(screen, "pink", (mousePosition[0] - size/2,mousePosition[1] - size/2, size, size))
 
   # flip() the display to put your work on screen
   pygame.display.flip()
 
-  # clock.tick(60)  # limits FPS to 60
+  # clock.tick(60)  # limits Fsize to 60
   dt = clock.tick(60) / 1000
 
 pygame.quit()
