@@ -1,10 +1,16 @@
 # Example file showing a basic pygame "game loop"
 import pygame
+import random
 import math
 
 # pygame setup
+
+DISPLAYSURF = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+# screen = pygame.display.set_mode((width, height))
+
+width = 1088
+height = 736
 pygame.init()
-screen = pygame.display.set_mode((1280, 720))
 clock = pygame.time.Clock()
 running = True
 
@@ -13,17 +19,18 @@ size = 32
 
 class Player():
   def __init__(self):
-    self.x = 0
-    self.y = 0
-    self.weapon = "greatSword"
+    self.x = size
+    self.y = size
+    self.weapon = "fire"
     self.isSwinging = False
 
   def move(self, mousePos):
     dirX = mousePos[0] - self.getX()
     dirY = mousePos[1] - self.getY()
 
-    if abs(dirX) <= size and abs(dirY) <= size:
+    if abs(dirX) <= size/4 and abs(dirY) <= size/4:
       return
+      # if already super close don't move
 
     unitMove = self.unitVector(mousePos)
 
@@ -87,13 +94,28 @@ class Player():
   def setIsSwinging(self, val):
     p.isSwinging = val
 
+class Enemy():
+  def __init__(self):
+    self.x = width/size
+    self.x = random.randint(1, width/size)
+    self.y = random.randint(1, height/size)
 
+  def getX(self):
+    return self.x
+
+  def getY(self):
+    return self.y
+  
+  def reset(self):
+    self.x = random.randint(1, width/size)
+    self.y = random.randint(1, height/size)
     
 p = Player()
-  
+e = Enemy()
 
 
 while running:
+
   # poll for events
   # pygame.QUIT event means the user clicked X to close your window
   for event in pygame.event.get():
@@ -104,24 +126,33 @@ while running:
     elif event.type == pygame.KEYDOWN:
         if event.key == pygame.K_a:
           print(p.getAlpha(pygame.mouse.get_pos()))
+        if event.key == pygame.K_r:
+          e.reset()
+          print(e.x)
+          print(e.y)
+        if event.key == pygame.K_ESCAPE:
+          running = False
 
   # fill the screen with a color to wipe away anything from last frame
-  screen.fill("black")
+  DISPLAYSURF.fill("black")
 
   mousePosition = pygame.mouse.get_pos()
   if p.getIsSwinging():
     alpha = p.getAlpha(mousePosition)
     myRectangle = pygame.Rect(p.getX() - size * 8, p.getY() - size * 8, size * 16, size * 16)
     # pygame.draw.rect(screen,"purple",myRectangle)
-    pygame.draw.arc(screen,"orange",myRectangle, alpha - (math.pi/9), alpha + (math.pi/9), size * 4)
+    pygame.draw.arc(DISPLAYSURF,"orange",myRectangle, alpha - (math.pi/9), alpha + (math.pi/9), size * 4)
     # pygame.draw.arc(screen,"orange",(x-64, y-64, 356, 356), alpha - (math.pi/6), alpha + (math.pi/6), 64)
   else:
     p.move(mousePosition)
 
   # RENDER YOUR GAME HERE
   # pygame.draw.rect(screen, "white", (p.getX() - size * 2, p.getY() - size * 2, 64, 64))
-  pygame.draw.rect(screen, "white", (p.center()[0], p.center()[1], size, size))
-  pygame.draw.rect(screen, "pink", (mousePosition[0] - size/2,mousePosition[1] - size/2, size, size))
+  pygame.draw.rect(DISPLAYSURF, "white", (p.center()[0], p.center()[1], size, size))
+  pygame.draw.rect(DISPLAYSURF, "lime", (e.getX() * size, e.getY() * size, size, size))
+  pygame.draw.rect(DISPLAYSURF, "white", (0,0,width+size * 2,height+size * 2),size)
+  # pygame.draw.rect(DISPLAYSURF, "pink", (0,0,width,height),1)
+  # pygame.draw.rect(screen, "pink", (mousePosition[0] - size/2,mousePosition[1] - size/2, size, size))
 
   # flip() the display to put your work on screen
   pygame.display.flip()
