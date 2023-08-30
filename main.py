@@ -9,7 +9,7 @@ clock = pygame.time.Clock()
 running = True
 
 size = 32
-#size
+# things move by 32's
 
 class Player():
   def __init__(self):
@@ -29,8 +29,8 @@ class Player():
 
     if (mousePos[0] and mousePos[1]):
       #check that it is not empty
-      newX = unitMove[0] * size + self.getX()
-      newY = unitMove[1] * size + self.getY()
+      newX = self.getX() + unitMove[0] * size/4
+      newY = self.getY() + unitMove[1] * size/4
 
       self.setX(newX * 1)
       self.setY(newY * 1)
