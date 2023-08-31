@@ -3,6 +3,8 @@ import pygame
 import random
 import math
 
+
+
 # pygame setup
 
 width = 1088
@@ -94,10 +96,27 @@ class Player():
     unitV = unitVector(self.getX(),self.getY(), mousePos)
     alpha = getAlpha(self.getX(), self.getY(), mousePos)
 
-    return [( round(unitV[0] * 4) + round(self.getX()/size), round(unitV[1] * 4) + round(self.getY()/size))]
+    resX1 = round(unitV[0] * 4) + round(self.getX()/size)
+    resY1 = round(unitV[1] * 4) + round(self.getY()/size)
+    resX2 = round(unitV[0] * 5) + round(self.getX()/size)
+    resY2 = round(unitV[1] * 5) + round(self.getY()/size)
+    resX3 = round(unitV[0] * 6) + round(self.getX()/size)
+    resY3 = round(unitV[1] * 6) + round(self.getY()/size)
+    resX4 = round(unitV[0] * 7) + round(self.getX()/size)
+    resY4 = round(unitV[1] * 7) + round(self.getY()/size)
+    resX5 = round(unitV[0] * 4) + round(self.getX()/size)
+    resY5 = round(unitV[1] * 6) + round(self.getY()/size)
+      # direction from player in singles
+      # translate to player position
 
-
-
+    res = []
+    for k in range(0,4):
+      for i in range(4, 8):
+        res.append((round(unitV[0] * (i - k)) + round(self.getX()/size),
+        round(unitV[1] * i) + round(self.getY()/size)))
+      # return [(resX1, resY1),(resX2, resY2),(resX3, resY3),(resX4, resY4),(resX5,resY5)]
+    
+    return res
 
 
   def getIsSwinging(self):
@@ -160,11 +179,14 @@ while running:
     # pygame.draw.rect(screen,"purple",myRectangle)
     pygame.draw.arc(DISPLAYSURF,"orange",myRectangle, alpha - (math.pi/9), alpha + (math.pi/9), size * 4)
     # pygame.draw.arc(screen,"orange",(x-64, y-64, 356, 356), alpha - (math.pi/6), alpha + (math.pi/6), 64)
-    x = p.swingBody(mousePosition)[0][0]
-    y = p.swingBody(mousePosition)[0][1]
+    # x = p.swingBody(mousePosition)[0][0]
+    # y = p.swingBody(mousePosition)[0][1]
+
+    for ((x,y)) in p.swingBody(mousePosition):
+      pygame.draw.rect(DISPLAYSURF, "purple",((x*size,y*size,size,size)))
     
-    pygame.draw.rect(DISPLAYSURF, "purple",((x*size,y*size,size,size)))
-    if (e.getX(), e.getY()) in p.swingBody(mousePosition):
+    # pygame.draw.rect(DISPLAYSURF, "purple",((x*size,y*size,size,size)))
+    if ((e.getX(), e.getY())) in p.swingBody(mousePosition):
       e.color = "gray"
     else:
       e.color = "lime"
