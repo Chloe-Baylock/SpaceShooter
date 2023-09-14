@@ -49,11 +49,12 @@ def getAlpha(yourX, yourY, mousePos):
 
   return alpha
 
-class Player():
+class MainChar():
   def __init__(self):
     self.x = size
     self.y = size
     self.weapon = "fire"
+    self.swingImage = pygame.Surface((40,40))
     self.isSwinging = False
 
   def move(self, mousePos):
@@ -71,8 +72,8 @@ class Player():
       newX = self.getX() + unitMove[0] * size/4
       newY = self.getY() + unitMove[1] * size/4
 
-      self.setX(newX * 1)
-      self.setY(newY * 1)
+      self.setX(newX)
+      self.setY(newY)
 
   def setX(self, val):
     self.x = val
@@ -96,26 +97,27 @@ class Player():
     unitV = unitVector(self.getX(),self.getY(), mousePos)
     alpha = getAlpha(self.getX(), self.getY(), mousePos)
 
-    resX1 = round(unitV[0] * 4) + round(self.getX()/size)
-    resY1 = round(unitV[1] * 4) + round(self.getY()/size)
-    resX2 = round(unitV[0] * 5) + round(self.getX()/size)
-    resY2 = round(unitV[1] * 5) + round(self.getY()/size)
-    resX3 = round(unitV[0] * 6) + round(self.getX()/size)
-    resY3 = round(unitV[1] * 6) + round(self.getY()/size)
-    resX4 = round(unitV[0] * 7) + round(self.getX()/size)
-    resY4 = round(unitV[1] * 7) + round(self.getY()/size)
-    resX5 = round(unitV[0] * 4) + round(self.getX()/size)
-    resY5 = round(unitV[1] * 6) + round(self.getY()/size)
-      # direction from player in singles
-      # translate to player position
+      # direction from MainChar in singles
+      # translate to MainChar position
 
+
+# if abs(alpha) < pi/2 add full to x
+# if abs(alpha) < pi add full to y
+# if abs(alpha) < 3pi/2 add full to x
+
+# 0     -    1/2        1/8,2/8,3/8,4/8
     res = []
-    for k in range(0,4):
-      for i in range(4, 8):
-        res.append((round(unitV[0] * (i - k)) + round(self.getX()/size),
-        round(unitV[1] * i) + round(self.getY()/size)))
-      # return [(resX1, resY1),(resX2, resY2),(resX3, resY3),(resX4, resY4),(resX5,resY5)]
-    
+    res.append(
+    (unitV[0] * 4 + self.getX()/size,
+    unitV[1] * 4 + self.getY()/size)
+    )
+
+
+    # for k in range(0,4):
+    #   for i in range(4, 8):
+    #     res.append((round(unitV[0] * (i - k)) + round(self.getX()/size),
+    #     round(unitV[1] * i) + round(self.getY()/size)))
+         
     return res
 
 
@@ -145,12 +147,13 @@ class Enemy():
     self.x = random.randint(1, width/size)
     self.y = random.randint(1, height/size)
     
-p = Player()
+p = MainChar()
 e = Enemy()
 
 
 while running:
 
+  mousePosition = pygame.mouse.get_pos()
   # poll for events
   # pygame.QUIT event means the user clicked X to close your window
   for event in pygame.event.get():
@@ -162,9 +165,10 @@ while running:
         if event.key == pygame.K_r:
           e.reset()
         if event.key == pygame.K_a:
-          print(p.swingBody(mousePosition))
-          print(e.getX())
-          print(e.getY())
+          # print(p.swingBody(mousePosition))
+          # print(e.getX())
+          # print(e.getY())
+          print(getAlpha(p.x,p.y,mousePosition))
         if event.key == pygame.K_ESCAPE:
           running = False
 
@@ -172,7 +176,6 @@ while running:
   # fill the screen with a color to wipe away anything from last frame
   DISPLAYSURF.fill("black")
 
-  mousePosition = pygame.mouse.get_pos()
   if p.getIsSwinging():
     alpha = -1 * getAlpha(p.getX(), p.getY(), mousePosition)
     myRectangle = pygame.Rect(p.getX() - size * 8, p.getY() - size * 8, size * 16, size * 16)
