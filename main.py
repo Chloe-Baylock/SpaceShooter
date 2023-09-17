@@ -21,6 +21,8 @@ clock = pygame.time.Clock()
 running = True
 
 
+
+
 def unitVector (yourX,yourY,mousePos):
   xVec = mousePos[0] - yourX
   yVec = mousePos[1] - yourY
@@ -49,10 +51,17 @@ def getAlpha(yourX, yourY, mousePos):
 
   return alpha
 
-class MainChar():
+class Player():
   def __init__(self):
     self.x = size
     self.y = size
+    self.player_surf = pygame.Surface((size, size))
+    self.player_rect = self.player_surf.get_rect(center = (300, 300))
+    self.player_mask = pygame.mask.from_surface(self.player_surf)
+
+    self.color = 'white'
+    self.player_surf.fill(self.color)
+
     self.weapon = "fire"
     self.swingImage = pygame.Surface((40,40))
     self.isSwinging = False
@@ -97,27 +106,15 @@ class MainChar():
     unitV = unitVector(self.getX(),self.getY(), mousePos)
     alpha = getAlpha(self.getX(), self.getY(), mousePos)
 
-      # direction from MainChar in singles
-      # translate to MainChar position
+      # direction from Player in singles
+      # translate to Player position
 
-
-# if abs(alpha) < pi/2 add full to x
-# if abs(alpha) < pi add full to y
-# if abs(alpha) < 3pi/2 add full to x
-
-# 0     -    1/2        1/8,2/8,3/8,4/8
     res = []
     res.append(
     (unitV[0] * 4 + self.getX()/size,
     unitV[1] * 4 + self.getY()/size)
     )
 
-
-    # for k in range(0,4):
-    #   for i in range(4, 8):
-    #     res.append((round(unitV[0] * (i - k)) + round(self.getX()/size),
-    #     round(unitV[1] * i) + round(self.getY()/size)))
-         
     return res
 
 
@@ -132,7 +129,13 @@ class Enemy():
     self.x = width/size
     self.x = random.randint(1, width/size)
     self.y = random.randint(1, height/size)
-    self.color = "lime"
+
+    self.enemy_surf = pygame.Surface((size, size))
+    self.enemy_rect = self.enemy_surf.get_rect(center = (300,300))
+    self.enemy_mask = pygame.mask.from_surface(self.enemy_surf)
+
+    self.color = "dark green"
+    self.enemy_surf.fill(self.color)
 
   def getX(self):
     return self.x
@@ -147,9 +150,24 @@ class Enemy():
     self.x = random.randint(1, width/size)
     self.y = random.randint(1, height/size)
     
-p = MainChar()
-e = Enemy()
 
+class Swing (pygame.sprite.Sprite):
+  def __init__(self):
+    super().__init__()
+    self.image = pygame.image.load('sprites/semicircle.png').convert_alpha()
+    self.rect = self.image.get_rect(center = (300, 300))
+    self.swing_mask = pygame.mask.from_surface(self.image)
+
+  def update(self):
+    self.rect = self.image.get_rect(center = (p.getX(), p.getY()))
+
+
+p = Player()
+e = Enemy()
+s = Swing()
+
+swing_group = pygame.sprite.Group()
+swing_group.add(s)
 
 while running:
 
@@ -174,34 +192,50 @@ while running:
 
 
   # fill the screen with a color to wipe away anything from last frame
-  DISPLAYSURF.fill("black")
+  DISPLAYSURF.fill("gray")
+
+  # if p.getIsSwinging():
+
+  #   alpha = -1 * getAlpha(p.getX(), p.getY(), mousePosition)
+  #   myRectangle = pygame.Rect(p.getX() - size * 8, p.getY() - size * 8, size * 16, size * 16)
+  #   # pygame.draw.rect(screen,"purple",myRectangle)
+  #   pygame.draw.arc(DISPLAYSURF,"orange",myRectangle, alpha - (math.pi/9), alpha + (math.pi/9), size * 4)
+  #   # pygame.draw.arc(screen,"orange",(x-64, y-64, 356, 356), alpha - (math.pi/6), alpha + (math.pi/6), 64)
+  #   # x = p.swingBody(mousePosition)[0][0]
+  #   # y = p.swingBody(mousePosition)[0][1]
+
+  # else:
+  #   p.move(mousePosition)
 
   if p.getIsSwinging():
-    alpha = -1 * getAlpha(p.getX(), p.getY(), mousePosition)
-    myRectangle = pygame.Rect(p.getX() - size * 8, p.getY() - size * 8, size * 16, size * 16)
-    # pygame.draw.rect(screen,"purple",myRectangle)
-    pygame.draw.arc(DISPLAYSURF,"orange",myRectangle, alpha - (math.pi/9), alpha + (math.pi/9), size * 4)
-    # pygame.draw.arc(screen,"orange",(x-64, y-64, 356, 356), alpha - (math.pi/6), alpha + (math.pi/6), 64)
-    # x = p.swingBody(mousePosition)[0][0]
-    # y = p.swingBody(mousePosition)[0][1]
+    swing_group.draw(DISPLAYSURF)
 
-    for ((x,y)) in p.swingBody(mousePosition):
-      pygame.draw.rect(DISPLAYSURF, "purple",((x*size,y*size,size,size)))
-    
-    # pygame.draw.rect(DISPLAYSURF, "purple",((x*size,y*size,size,size)))
-    if ((e.getX(), e.getY())) in p.swingBody(mousePosition):
-      e.color = "gray"
-    else:
-      e.color = "lime"
+    offset_x2 = e.getX() * size - s.rect.left
+    offset_y2 = e.getY() * size - s.rect.top
+    if s.swing_mask.overlap(e.enemy_mask,(offset_x2,offset_y2)):
+      e.enemy_surf.fill('orange')
   else:
+    e.enemy_surf.fill('dark green')
     p.move(mousePosition)
+    s.update()
+
+  offset_x = e.getX() * size - p.getX()
+  offset_y = e.getY() * size - p.getY()
+
+
+  if p.player_mask.overlap(e.enemy_mask,(offset_x,offset_y)):
+    p.player_surf.fill('cyan')
+  else:
+    p.player_surf.fill('white')
 
 
 
   # RENDER YOUR GAME HERE
-  pygame.draw.rect(DISPLAYSURF, "white", (p.center()[0], p.center()[1], size, size))
-  pygame.draw.rect(DISPLAYSURF, e.color, (e.getX() *size, e.getY() * size, size, size))
+  # pygame.draw.rect(DISPLAYSURF, "white", (p.center()[0], p.center()[1], size, size))
+  # pygame.draw.rect(DISPLAYSURF, e.color, (e.getX() *size, e.getY() * size, size, size))
   pygame.draw.rect(DISPLAYSURF, "white", (0,0,width+size * 2,height+size * 2),size)
+  DISPLAYSURF.blit(e.enemy_surf,(e.getX() * size,e.getY() * size))
+  DISPLAYSURF.blit(p.player_surf,(p.getX(),p.getY()))
 
   # flip() the display to put your work on screen
   pygame.display.flip()
