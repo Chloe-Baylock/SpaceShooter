@@ -189,31 +189,26 @@ while running:
   # fill the screen with a color to wipe away anything from last frame
   DISPLAYSURF.fill("gray")
 
-  # if p.getIsSwinging():
-
-  #   alpha = -1 * getAlpha(p.getX(), p.getY(), mousePosition)
-  #   myRectangle = pygame.Rect(p.getX() - size * 8, p.getY() - size * 8, size * 16, size * 16)
-  #   # pygame.draw.rect(screen,"purple",myRectangle)
-  #   pygame.draw.arc(DISPLAYSURF,"orange",myRectangle, alpha - (math.pi/9), alpha + (math.pi/9), size * 4)
-  #   # pygame.draw.arc(screen,"orange",(x-64, y-64, 356, 356), alpha - (math.pi/6), alpha + (math.pi/6), 64)
-  #   # x = p.swingBody(mousePosition)[0][0]
-  #   # y = p.swingBody(mousePosition)[0][1]
-
-  # else:
-  #   p.move(mousePosition)
-
   if p.getIsSwinging():
     # swing_group.draw(DISPLAYSURF)
 
-    offset_x2 = e.getX() * size - s.rect.left
-    offset_y2 = e.getY() * size - s.rect.top
+    s.image_rot = pygame.transform.rotate(s.image,math.degrees(getAlpha(p.get_center()[0], p.get_center()[1],mousePosition)) - 90)
+    
+    # pop arc from center of player
+    units = unitVector(p.get_center()[0],p.get_center()[1],mousePosition)
+    x = s.rect.center[0] + units[0] * size/2
+    y = s.rect.center[1] + units[1] * size/2
+
+    s.image_rot_rect = s.image_rot.get_rect(center = (x,y))
+    s.swing_mask = pygame.mask.from_surface(s.image_rot)
+
+    offset_x2 = e.getX() * size - s.image_rot_rect.left
+    offset_y2 = e.getY() * size - s.image_rot_rect.top
     if s.swing_mask.overlap(e.enemy_mask,(offset_x2,offset_y2)):
       e.enemy_surf.fill('orange')
-      # if math.degrees(getAlpha(p.getX(), p.getY(), mousePosition)) > s.rot:
-      #   s.surf = pygame.transform.rotate(s.surf,90)
-    # s.image_rot = pygame.transform.rotate(s.image,math.degrees(-1 * getAlpha(p.getX(), p.getY(),mousePosition) - 90))
-    s.image_rot = pygame.transform.rotate(s.image,math.degrees(getAlpha(p.get_center()[0], p.get_center()[1],mousePosition)) - 90)
-    s.image_rot_rect = s.image_rot.get_rect(center = s.rect.center)
+    else:
+      e.enemy_surf.fill('red')
+
     DISPLAYSURF.blit(s.image_rot, s.image_rot_rect)
   else:
     e.enemy_surf.fill('dark green')
@@ -232,8 +227,6 @@ while running:
 
 
   # RENDER YOUR GAME HERE
-  # pygame.draw.rect(DISPLAYSURF, "white", (p.center()[0], p.center()[1], size, size))
-  # pygame.draw.rect(DISPLAYSURF, e.color, (e.getX() *size, e.getY() * size, size, size))
   pygame.draw.rect(DISPLAYSURF, "white", (0,0,width+size * 2,height+size * 2),size)
   DISPLAYSURF.blit(e.enemy_surf,(e.getX() * size,e.getY() * size))
   DISPLAYSURF.blit(p.player_surf,(p.getX(),p.getY()))
