@@ -13,8 +13,8 @@ class Player():
     self.player_surf.fill(self.color)
 
     self.weapon = "fire"
-    self.swingImage = pygame.Surface((40,40))
-    self.isSwinging = False
+    self.swing_image = pygame.Surface((40,40))
+    self.is_swinging = False
 
   def move(self, mousePos):
     dirX = mousePos[0] - self.get_x()
@@ -67,7 +67,7 @@ class Player():
     return res
 
   def get_is_swinging(self):
-    return self.isSwinging
+    return self.is_swinging
 
   def set_is_swinging(self, val):
-    self.isSwinging = val
+    self.is_swinging = val

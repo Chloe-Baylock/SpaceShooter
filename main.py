@@ -14,7 +14,6 @@ from classes import *
 
 
 # TODO:
-# make swing bigger
 # make enemy move
 
 
@@ -39,9 +38,8 @@ while running:
     if event.type == pygame.QUIT:
       running = False
     elif event.type == pygame.MOUSEBUTTONDOWN:
-      print(event.button)
       if event.button == 1:
-        p.set_is_swinging(not p.isSwinging)
+        p.set_is_swinging(not p.is_swinging)
     elif event.type == pygame.KEYDOWN:
         if event.key == pygame.K_r:
           e.reset()
