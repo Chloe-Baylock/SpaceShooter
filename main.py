@@ -39,15 +39,9 @@ def unitVector (yourX,yourY,mousePos):
 
 def getAlpha(yourX, yourY, mousePos):
   x = mousePos[0] - yourX
-  y = mousePos[1] - yourY
+  y = -1 * (mousePos[1] - yourY)
 
-  
-  if (x == 0):
-    return
-
-  alpha = math.atan(y/x)
-  if x < 0:
-    alpha += math.pi
+  alpha = math.atan2(y,x)
 
   return alpha
 
@@ -96,8 +90,8 @@ class Player():
   def getY(self):
     return self.y
 
-  def center(self):
-    return ((self.getX() - size/2, self.getY() - size/2))
+  def get_center(self):
+    return ((self.getX() + size/2, self.getY() + size/2))
 
   def swing(self, weapon):
     self.isSwinging = True
@@ -144,7 +138,7 @@ class Enemy():
     return self.y
   
   def center(self):
-    return ((self.getX() - .5, self.getY() - .5))
+    return ((self.getX() - size/2, self.getY() - size/2))
 
   def reset(self):
     self.x = random.randint(1, width/size)
@@ -154,12 +148,16 @@ class Enemy():
 class Swing (pygame.sprite.Sprite):
   def __init__(self):
     super().__init__()
+    self.surf = pygame.Surface((64,64))
     self.image = pygame.image.load('sprites/semicircle.png').convert_alpha()
-    self.rect = self.image.get_rect(center = (300, 300))
+    self.rect = self.image.get_rect(center = p.get_center())
     self.swing_mask = pygame.mask.from_surface(self.image)
 
+    self.image_rot = pygame.image.load('sprites/semicircle.png').convert_alpha()
+    self.image_rot_rect = self.image_rot.get_rect(center = (300, 300))
+
   def update(self):
-    self.rect = self.image.get_rect(center = (p.getX(), p.getY()))
+    self.rect = self.image.get_rect(center = (p.getX() + size/2, p.getY() + size/2))
 
 
 p = Player()
@@ -183,10 +181,7 @@ while running:
         if event.key == pygame.K_r:
           e.reset()
         if event.key == pygame.K_a:
-          # print(p.swingBody(mousePosition))
-          # print(e.getX())
-          # print(e.getY())
-          print(getAlpha(p.x,p.y,mousePosition))
+          pass
         if event.key == pygame.K_ESCAPE:
           running = False
 
@@ -208,12 +203,18 @@ while running:
   #   p.move(mousePosition)
 
   if p.getIsSwinging():
-    swing_group.draw(DISPLAYSURF)
+    # swing_group.draw(DISPLAYSURF)
 
     offset_x2 = e.getX() * size - s.rect.left
     offset_y2 = e.getY() * size - s.rect.top
     if s.swing_mask.overlap(e.enemy_mask,(offset_x2,offset_y2)):
       e.enemy_surf.fill('orange')
+      # if math.degrees(getAlpha(p.getX(), p.getY(), mousePosition)) > s.rot:
+      #   s.surf = pygame.transform.rotate(s.surf,90)
+    # s.image_rot = pygame.transform.rotate(s.image,math.degrees(-1 * getAlpha(p.getX(), p.getY(),mousePosition) - 90))
+    s.image_rot = pygame.transform.rotate(s.image,math.degrees(getAlpha(p.get_center()[0], p.get_center()[1],mousePosition)) - 90)
+    s.image_rot_rect = s.image_rot.get_rect(center = s.rect.center)
+    DISPLAYSURF.blit(s.image_rot, s.image_rot_rect)
   else:
     e.enemy_surf.fill('dark green')
     p.move(mousePosition)
