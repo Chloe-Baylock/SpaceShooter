@@ -13,7 +13,7 @@ from classes import *
 # I unfortunately cannot quite understand this. ^
 
 
-# TODO: event.button to check only left click
+# TODO:
 # make swing bigger
 # make enemy move
 
@@ -39,9 +39,9 @@ while running:
     if event.type == pygame.QUIT:
       running = False
     elif event.type == pygame.MOUSEBUTTONDOWN:
-      # left click to swing (is the idea)
-      # use event.button
-      p.set_is_swinging(not p.isSwinging)
+      print(event.button)
+      if event.button == 1:
+        p.set_is_swinging(not p.isSwinging)
     elif event.type == pygame.KEYDOWN:
         if event.key == pygame.K_r:
           e.reset()
