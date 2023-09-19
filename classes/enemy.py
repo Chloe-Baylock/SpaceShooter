@@ -5,8 +5,8 @@ import globals, methods
 
 class Enemy():
   def __init__(self):
-    self.x = random.randint(1, globals.width/globals.size)
-    self.y = random.randint(1, globals.height/globals.size)
+    self.x = random.randint(1, globals.width)
+    self.y = random.randint(1, globals.height)
 
     self.speed = 3
 
@@ -44,10 +44,15 @@ class Enemy():
   def move(self):
     unit_vec = methods.unit_vector(self.get_x(), self.get_y(), ((self.point_x,self.point_y)))
     if (abs(self.get_x() - self.point_x) <= self.speed and abs(self.get_y() - self.point_y) <= self.speed):
-      return
+      # when you arrive, go somewhere else
+      self.point_x = random.randint(1, globals.width)
+      self.point_y = random.randint(1, globals.height)
     else:
       self.set_x(unit_vec[0] * self.speed + self.get_x())
       self.set_y(unit_vec[1] * self.speed + self.get_y())
+
+  def kill(self, enemy_list):
+    enemy_list.remove(self)
 
   def update(self):
     self.rect = self.enemy_surf.get_rect(center = (self.get_center()[0], self.get_center()[1]))

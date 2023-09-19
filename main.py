@@ -14,7 +14,6 @@ from classes import *
 
 
 # TODO:
-# make enemy move
 
 
 
@@ -22,28 +21,22 @@ pygame.init()
 clock = pygame.time.Clock()
 running = True
 
-ran = 4
 
 p = player.Player()
-e = enemy.Enemy()
-obj_ls = list(range(ran))
-for n in range(ran):
-  obj_ls[n] = enemy.Enemy()
 s = swing.Swing(p)
-# e_2 = enemy.Enemy()
-# e_2.enemy_surf.fill("purple")
 
+enemy_count = []
+enemy_list = []
 
-ls = [e]
-for obj in obj_ls:
-  ls.append(obj)
+methods.make_enemies(20, enemy_count, enemy_list)
 
 
 swing_group = pygame.sprite.Group()
 swing_group.add(s)
+# I do not understand sprite groups just yet
+
 
 while running:
-
   mouse_pos = pygame.mouse.get_pos()
   # poll for events
   # pygame.QUIT event means the user clicked X to close your window
@@ -55,18 +48,15 @@ while running:
         p.set_is_swinging(not p.is_swinging)
     elif event.type == pygame.KEYDOWN:
         if event.key == pygame.K_r:
-          e.reset()
+          # e.reset()
+          pass
         if event.key == pygame.K_a:
-          print(e.get_x())
-          print(e.point_x)
+          pass
         if event.key == pygame.K_s:
-          print(e.get_y())
-          print(e.point_y)
+          pass
         if event.key == pygame.K_ESCAPE:
           running = False
 
-
-  # fill the screen with a color to wipe away anything from last frame
   globals.screen.fill("gray")
 
   if p.get_is_swinging():
@@ -81,28 +71,28 @@ while running:
     s.image_rot_rect = s.image_rot.get_rect(center = (x,y))
     s.swing_mask = pygame.mask.from_surface(s.image_rot)
 
-    for thing in ls:
+    for thing in enemy_list:
       offset_x2 = thing.get_x() - s.image_rot_rect.left
       offset_y2 = thing.get_y() - s.image_rot_rect.top
 
       #this rectangle collision is messy
       if s.image.get_rect().colliderect(thing.enemy_surf.get_rect()):
         if s.swing_mask.overlap(thing.enemy_mask,(offset_x2,offset_y2)):
-          thing.reset()
+          # thing.reset()
+          thing.kill(enemy_list)
           p.set_is_swinging(False)
 
     globals.screen.blit(s.image_rot, s.image_rot_rect)
   else:
-    e.enemy_surf.fill('dark green')
     p.move(mouse_pos)
     s.update()
 
-  for thing in ls:
+  for thing in enemy_list:
     thing.move()
     
 
 
-  for thing in ls:
+  for thing in enemy_list:
     offset_x = thing.get_x() - p.get_x()
     offset_y = thing.get_y() - p.get_y()
     if p.player_mask.overlap(thing.enemy_mask,(offset_x,offset_y)):
@@ -113,7 +103,7 @@ while running:
 
   # RENDER YOUR GAME HERE
   pygame.draw.rect(globals.screen, "white", (0,0,globals.width+globals.size * 2,globals.height+globals.size * 2),globals.size)
-  for thing in ls:
+  for thing in enemy_list:
     globals.screen.blit(thing.enemy_surf,(thing.get_x(),thing.get_y()))
   globals.screen.blit(p.player_surf,(p.get_x(),p.get_y()))
   # ^ walls, enemy, player, enemy point

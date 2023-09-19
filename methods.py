@@ -1,4 +1,5 @@
 import math
+from classes import enemy
 
 def unit_vector (your_x,your_y,mousePos):
   x_vector = mousePos[0] - your_x
@@ -17,3 +18,9 @@ def get_alpha(your_x, your_y, mousePos):
   alpha = math.atan2(y,x)
 
   return alpha
+
+def make_enemies(num_to_make, enemy_count, enemy_list):
+  for x in range(num_to_make):
+    enemy_count.append(len(enemy_count))
+    enemy_count[-1] = enemy.Enemy()
+    enemy_list.append(enemy_count[-1])
