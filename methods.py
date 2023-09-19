@@ -5,9 +5,9 @@ def unit_vector (your_x,your_y,mousePos):
   y_vector = mousePos[1] - your_y
   hypotenuse = math.sqrt(x_vector ** 2 + y_vector ** 2)
 
-  if (x_vector == 0):
-    #no division by 0
-    return ((0,0))
+  # if (x_vector == 0 or y_vector == 0):
+  #   #no division by 0
+  #   return ((0,0))
 
   unit_x = x_vector/hypotenuse
   unit_y = y_vector/hypotenuse

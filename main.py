@@ -44,8 +44,11 @@ while running:
         if event.key == pygame.K_r:
           e.reset()
         if event.key == pygame.K_a:
-          # for debugging
-          pass
+          print(e.get_x())
+          print(e.point_x)
+        if event.key == pygame.K_s:
+          print(e.get_y())
+          print(e.point_y)
         if event.key == pygame.K_ESCAPE:
           running = False
 
@@ -77,6 +80,7 @@ while running:
     e.enemy_surf.fill('dark green')
     p.move(mouse_pos)
     s.update()
+    e.move()
 
   offset_x = e.get_x() * globals.size - p.get_x()
   offset_y = e.get_y() * globals.size - p.get_y()
@@ -87,12 +91,11 @@ while running:
   else:
     p.player_surf.fill('white')
 
-
-
   # RENDER YOUR GAME HERE
   pygame.draw.rect(globals.screen, "white", (0,0,globals.width+globals.size * 2,globals.height+globals.size * 2),globals.size)
   globals.screen.blit(e.enemy_surf,(e.get_x() * globals.size,e.get_y() * globals.size))
   globals.screen.blit(p.player_surf,(p.get_x(),p.get_y()))
+  pygame.draw.rect(globals.screen, "blue", (e.point_x * globals.size,e.point_y * globals.size,4,4))
   # ^ walls, enemy, player
 
 
