@@ -13,5 +13,9 @@ class Swing (pygame.sprite.Sprite):
     self.image_rot = pygame.image.load('sprites/bigger_swing.png').convert_alpha()
     self.image_rot_rect = self.image_rot.get_rect(center = (300, 300))
 
+  def get_center(self):
+    
+    pass
+
   def update(self):
     self.rect = self.image.get_rect(center = (self.gamer.get_x() + globals.size/2, self.gamer.get_y() + globals.size/2))

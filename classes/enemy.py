@@ -11,7 +11,7 @@ class Enemy():
     self.speed = 3
 
     self.enemy_surf = pygame.Surface((globals.size, globals.size))
-    self.enemy_rect = self.enemy_surf.get_rect(center = (300,300))
+    self.rect = self.enemy_surf.get_rect()
     self.enemy_mask = pygame.mask.from_surface(self.enemy_surf)
 
     self.color = "dark green"
@@ -31,8 +31,8 @@ class Enemy():
   def set_y(self, val):
     self.y = val
   
-  def center(self):
-    return ((self.get_x() - globals.size/2, self.get_y() - globals.size/2))
+  def get_center(self):
+    return ((self.get_x() + globals.size/2, self.get_y() + globals.size/2))
 
   def reset(self):
     self.x = random.randint(1, globals.width)
@@ -48,3 +48,6 @@ class Enemy():
     else:
       self.set_x(unit_vec[0] * self.speed + self.get_x())
       self.set_y(unit_vec[1] * self.speed + self.get_y())
+
+  def update(self):
+    self.rect = self.enemy_surf.get_rect(center = (self.get_center()[0], self.get_center()[1]))

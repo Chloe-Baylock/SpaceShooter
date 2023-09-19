@@ -76,9 +76,12 @@ while running:
     for thing in ls:
       offset_x2 = thing.get_x() - s.image_rot_rect.left
       offset_y2 = thing.get_y() - s.image_rot_rect.top
-      if s.swing_mask.overlap(thing.enemy_mask,(offset_x2,offset_y2)):
-        thing.reset()
-        p.set_is_swinging(False)
+
+      #this rectangle collision is messy
+      if s.image.get_rect().colliderect(thing.enemy_surf.get_rect()):
+        if s.swing_mask.overlap(thing.enemy_mask,(offset_x2,offset_y2)):
+          thing.reset()
+          p.set_is_swinging(False)
 
     globals.screen.blit(s.image_rot, s.image_rot_rect)
   else:
@@ -90,14 +93,15 @@ while running:
     thing.move()
     
 
-  offset_x = e.get_x() - p.get_x()
-  offset_y = e.get_y() - p.get_y()
 
-
-  if p.player_mask.overlap(e.enemy_mask,(offset_x,offset_y)):
-    p.player_surf.fill('cyan')
-  else:
-    p.player_surf.fill('white')
+  for thing in ls:
+    offset_x = thing.get_x() - p.get_x()
+    offset_y = thing.get_y() - p.get_y()
+    if p.player_mask.overlap(thing.enemy_mask,(offset_x,offset_y)):
+      p.player_surf.fill('cyan')
+      break
+    else:
+      p.player_surf.fill('white')
 
   # RENDER YOUR GAME HERE
   pygame.draw.rect(globals.screen, "white", (0,0,globals.width+globals.size * 2,globals.height+globals.size * 2),globals.size)
@@ -105,7 +109,6 @@ while running:
     globals.screen.blit(thing.enemy_surf,(thing.get_x(),thing.get_y()))
   globals.screen.blit(p.player_surf,(p.get_x(),p.get_y()))
   # ^ walls, enemy, player, enemy point
-
 
 
   # flip() the display to put your work on screen
