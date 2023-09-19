@@ -24,7 +24,12 @@ running = True
 
 p = player.Player()
 e = enemy.Enemy()
+e_2 = enemy.Enemy()
 s = swing.Swing(p)
+
+e_2.enemy_surf.fill("purple")
+
+ls = [e, e_2]
 
 swing_group = pygame.sprite.Group()
 swing_group.add(s)
@@ -68,14 +73,12 @@ while running:
     s.image_rot_rect = s.image_rot.get_rect(center = (x,y))
     s.swing_mask = pygame.mask.from_surface(s.image_rot)
 
-    offset_x2 = e.get_x() - s.image_rot_rect.left
-    offset_y2 = e.get_y() - s.image_rot_rect.top
-    if s.swing_mask.overlap(e.enemy_mask,(offset_x2,offset_y2)):
-      e.reset()
-      p.set_is_swinging(False)
-      # e.enemy_surf.fill('orange')
-    else:
-      e.enemy_surf.fill('dark green')
+    for thing in ls:
+      offset_x2 = thing.get_x() - s.image_rot_rect.left
+      offset_y2 = thing.get_y() - s.image_rot_rect.top
+      if s.swing_mask.overlap(thing.enemy_mask,(offset_x2,offset_y2)):
+        thing.reset()
+        p.set_is_swinging(False)
 
     globals.screen.blit(s.image_rot, s.image_rot_rect)
   else:
@@ -83,7 +86,9 @@ while running:
     p.move(mouse_pos)
     s.update()
 
-  e.move()
+  for thing in ls:
+    thing.move()
+    
 
   offset_x = e.get_x() - p.get_x()
   offset_y = e.get_y() - p.get_y()
@@ -96,10 +101,11 @@ while running:
 
   # RENDER YOUR GAME HERE
   pygame.draw.rect(globals.screen, "white", (0,0,globals.width+globals.size * 2,globals.height+globals.size * 2),globals.size)
-  globals.screen.blit(e.enemy_surf,(e.get_x(),e.get_y()))
+  for thing in ls:
+    globals.screen.blit(thing.enemy_surf,(thing.get_x(),thing.get_y()))
   globals.screen.blit(p.player_surf,(p.get_x(),p.get_y()))
-  pygame.draw.rect(globals.screen, "blue", (e.point_x,e.point_y,4,4))
   # ^ walls, enemy, player, enemy point
+
 
 
   # flip() the display to put your work on screen
