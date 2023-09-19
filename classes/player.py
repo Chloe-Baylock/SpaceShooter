@@ -21,15 +21,21 @@ class Player():
     dirY = mousePos[1] - self.get_y()
 
     if abs(dirX) <= globals.size/4 and abs(dirY) <= globals.size/4:
+      if abs(dirX) <= 1 and abs(dirY) <= 1:
+        return
+      else:
+        val = 1
       return
       # if already super close don't move
+    else:
+      val = globals.size/4
 
     unitMove = methods.unit_vector(self.get_x(), self.get_y(),mousePos)
 
     if (mousePos[0] and mousePos[1]):
       #check that it is not empty
-      newX = self.get_x() + unitMove[0] * globals.size/4
-      newY = self.get_y() + unitMove[1] * globals.size/4
+      newX = self.get_x() + unitMove[0] * val
+      newY = self.get_y() + unitMove[1] * val
 
       self.set_x(newX)
       self.set_y(newY)
