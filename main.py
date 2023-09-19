@@ -71,7 +71,9 @@ while running:
     offset_x2 = e.get_x() - s.image_rot_rect.left
     offset_y2 = e.get_y() - s.image_rot_rect.top
     if s.swing_mask.overlap(e.enemy_mask,(offset_x2,offset_y2)):
-      e.enemy_surf.fill('orange')
+      e.reset()
+      p.set_is_swinging(False)
+      # e.enemy_surf.fill('orange')
     else:
       e.enemy_surf.fill('dark green')
 

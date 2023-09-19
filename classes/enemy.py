@@ -8,7 +8,7 @@ class Enemy():
     self.x = random.randint(1, globals.width/globals.size)
     self.y = random.randint(1, globals.height/globals.size)
 
-    self.speed = 1
+    self.speed = 3
 
     self.enemy_surf = pygame.Surface((globals.size, globals.size))
     self.enemy_rect = self.enemy_surf.get_rect(center = (300,300))
