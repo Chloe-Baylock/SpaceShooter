@@ -22,14 +22,22 @@ pygame.init()
 clock = pygame.time.Clock()
 running = True
 
+ran = 4
+
 p = player.Player()
 e = enemy.Enemy()
-e_2 = enemy.Enemy()
+obj_ls = list(range(ran))
+for n in range(ran):
+  obj_ls[n] = enemy.Enemy()
 s = swing.Swing(p)
+# e_2 = enemy.Enemy()
+# e_2.enemy_surf.fill("purple")
 
-e_2.enemy_surf.fill("purple")
 
-ls = [e, e_2]
+ls = [e]
+for obj in obj_ls:
+  ls.append(obj)
+
 
 swing_group = pygame.sprite.Group()
 swing_group.add(s)
