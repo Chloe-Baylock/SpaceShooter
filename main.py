@@ -13,8 +13,15 @@ from classes import *
 # I unfortunately cannot quite understand this. ^
 
 
-# TODO:
-
+# TODO: big swing arc
+# swing animation
+# update hitbox with animation
+# become a circle instead of a square
+# combo counter
+# sound effect
+# fix rectangle collision mess
+# enemy death splat for a few seconds
+# enemy spawning
 
 
 pygame.init()
@@ -28,7 +35,7 @@ s = swing.Swing(p)
 enemy_count = []
 enemy_list = []
 
-methods.make_enemies(20, enemy_count, enemy_list)
+methods.make_enemies(4, enemy_count, enemy_list)
 
 
 swing_group = pygame.sprite.Group()
@@ -78,8 +85,8 @@ while running:
       #this rectangle collision is messy
       if s.image.get_rect().colliderect(thing.enemy_surf.get_rect()):
         if s.swing_mask.overlap(thing.enemy_mask,(offset_x2,offset_y2)):
-          # thing.reset()
-          thing.kill(enemy_list)
+          thing.reset()
+          # thing.kill(enemy_list)
           p.set_is_swinging(False)
 
     globals.screen.blit(s.image_rot, s.image_rot_rect)
