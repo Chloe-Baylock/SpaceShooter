@@ -13,7 +13,7 @@ from classes import *
 # I unfortunately cannot quite understand this. ^
 
 
-# TODO: big swing arc
+# TODO:
 # swing animation
 # update hitbox with animation
 # become a circle instead of a square
