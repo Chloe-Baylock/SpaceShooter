@@ -71,17 +71,20 @@ while running:
 
   if globals.ticks - p.swing_start == 15:
     p.set_is_swinging(False)
+  globals.screen.blit(p.player_surf,(p.get_x(),p.get_y()))
 
   if p.get_is_swinging():
-    # s.image_rot = pygame.transform.rotate(s.image,math.degrees(methods.get_alpha(p.get_center()[0], p.get_center()[1],mouse_pos)) - 90)
-
+    # every frame we will rotate the original image, then recenter it
+    
     time_diff = globals.ticks - p.swing_start
-    s.image_rot = pygame.transform.rotate(s.image,math.degrees(methods.get_alpha(p.get_center()[0], p.get_center()[1],s.mouse_was)) - (90 - time_diff * 4) )
+    # counts frames since beginning of swing
+    swing_alpha = math.degrees(methods.get_alpha(p.get_center()[0], p.get_center()[1],s.mouse_was))
+    s.image_rot = pygame.transform.rotate(s.image, swing_alpha - 90 - 45 + time_diff * 6)
+    
     # pop arc from center of player
-    units = methods.unit_vector(p.get_center()[0],p.get_center()[1],s.mouse_was)
-    x = s.rect.center[0] + units[0] * globals.size/2
-    y = s.rect.center[1] + units[1] * globals.size/2
-
+    swing_alpha_2 = math.radians(swing_alpha - 45 + time_diff * 6)
+    x = s.rect.center[0] + math.cos(swing_alpha_2) * globals.size/2
+    y = s.rect.center[1] - math.sin(swing_alpha_2) * globals.size/2
     s.image_rot_rect = s.image_rot.get_rect(center = (x,y))
     s.swing_mask = pygame.mask.from_surface(s.image_rot)
 
@@ -119,7 +122,6 @@ while running:
   pygame.draw.rect(globals.screen, "white", (0,0,globals.width+globals.size * 2,globals.height+globals.size * 2),globals.size)
   for thing in enemy_list:
     globals.screen.blit(thing.enemy_surf,(thing.get_x(),thing.get_y()))
-  globals.screen.blit(p.player_surf,(p.get_x(),p.get_y()))
   # ^ walls, enemy, player, enemy point
 
 
