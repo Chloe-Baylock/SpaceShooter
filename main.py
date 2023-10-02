@@ -52,7 +52,10 @@ while running:
       running = False
     elif event.type == pygame.MOUSEBUTTONDOWN:
       if event.button == 1:
-        p.set_is_swinging(not p.is_swinging)
+        if p.is_swinging == False:
+          p.set_is_swinging(True)
+          p.swing_start = globals.ticks
+          s.mouse_was = mouse_pos
     elif event.type == pygame.KEYDOWN:
         if event.key == pygame.K_r:
           # e.reset()
@@ -66,12 +69,16 @@ while running:
 
   globals.screen.fill("gray")
 
-  if p.get_is_swinging():
+  if globals.ticks - p.swing_start == 15:
+    p.set_is_swinging(False)
 
-    s.image_rot = pygame.transform.rotate(s.image,math.degrees(methods.get_alpha(p.get_center()[0], p.get_center()[1],mouse_pos)) - 90)
-    
+  if p.get_is_swinging():
+    # s.image_rot = pygame.transform.rotate(s.image,math.degrees(methods.get_alpha(p.get_center()[0], p.get_center()[1],mouse_pos)) - 90)
+
+    time_diff = globals.ticks - p.swing_start
+    s.image_rot = pygame.transform.rotate(s.image,math.degrees(methods.get_alpha(p.get_center()[0], p.get_center()[1],s.mouse_was)) - (90 - time_diff * 4) )
     # pop arc from center of player
-    units = methods.unit_vector(p.get_center()[0],p.get_center()[1],mouse_pos)
+    units = methods.unit_vector(p.get_center()[0],p.get_center()[1],s.mouse_was)
     x = s.rect.center[0] + units[0] * globals.size/2
     y = s.rect.center[1] + units[1] * globals.size/2
 
@@ -118,6 +125,8 @@ while running:
 
   # flip() the display to put your work on screen
   pygame.display.flip()
+
+  globals.ticks += 1
 
   # clock.tick(60)  # limits Fglobals.size to 60
   dt = clock.tick(60) / 1000

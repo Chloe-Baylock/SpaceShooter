@@ -15,8 +15,9 @@ class Swing (pygame.sprite.Sprite):
     # self.image_rot = pygame.image.load('sprites/184pxswing.png').convert_alpha()
     self.image_rot_rect = self.image_rot.get_rect(center = (300, 300))
 
+    self.mouse_was = (0,0)
+
   def get_center(self):
-    
     pass
 
   def update(self):

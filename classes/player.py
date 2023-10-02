@@ -16,6 +16,8 @@ class Player():
     self.swing_image = pygame.Surface((40,40))
     self.is_swinging = False
 
+    self.swing_start = 0
+
   def move(self, mousePos):
     dirX = mousePos[0] - self.get_x()
     dirY = mousePos[1] - self.get_y()
@@ -77,6 +79,7 @@ class Player():
 
   def set_is_swinging(self, val):
     self.is_swinging = val
+
 
   # def update(self):
   #   self.rect = self.image.get_rect(center = (self.gamer.get_x() + globals.size/2, self.gamer.get_y() + globals.size/2))
