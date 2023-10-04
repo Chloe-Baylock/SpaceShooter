@@ -12,7 +12,8 @@ class Swing (pygame.sprite.Sprite):
     self.image_rot_rect = self.image_rot.get_rect(center = (300, 300))
 
     self.mouse_was = (0,0)
-
+    self.alpha = 0
+    self.frame_val = 0
 
     # self.anim_1_image = pygame.image.load('sprites/swing_anim_1.png')
 

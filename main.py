@@ -43,6 +43,7 @@ swing_group.add(s)
 
 while running:
   mouse_pos = pygame.mouse.get_pos()
+  p.set_color('white')
   # poll for events
   # pygame.QUIT event means the user clicked X to close your window
   for event in pygame.event.get():
@@ -69,107 +70,227 @@ while running:
 
   globals.screen.fill("gray")
 
+  # time_diff = globals.ticks - p.swing_start
+  # # counts frames since beginning of swing
+
+  # # wet code
+
+  # if time_diff == 40:
+  #   p.set_is_swinging(False)
+
+  # elif p.get_is_swinging() and time_diff <= 15:
+  #   # every frame we will rotate the original image, then recenter it
+    
+  #   swing_alpha = math.degrees(methods.get_alpha(p.get_x(), p.get_y(),s.mouse_was))
+  #   s.image_rot = pygame.transform.rotate(s.image, swing_alpha - 90 - 60 + time_diff * 8)
+    
+  #   # pop arc from center of player
+  #   swing_alpha_2 = math.radians(swing_alpha - 60 + time_diff * 8)
+  #   x = s.rect.center[0] + math.cos(swing_alpha_2) * globals.size/2
+  #   y = s.rect.center[1] - math.sin(swing_alpha_2) * globals.size/2
+  #   s.image_rot_rect = s.image_rot.get_rect(center = (x,y))
+  #   s.swing_mask = pygame.mask.from_surface(s.image_rot)
+
+  #   for thing in enemy_list:
+  #     offset_x2 = thing.rect.left - s.image_rot_rect.left
+  #     offset_y2 = thing.rect.top - s.image_rot_rect.top
+
+  #     #this rectangle collision is messy
+  #     if s.image.get_rect().colliderect(thing.enemy_surf.get_rect()):
+  #       if s.swing_mask.overlap(thing.enemy_mask,(offset_x2,offset_y2)):
+  #         thing.reset()
+  #         # thing.kill(enemy_list)
+
+  #   globals.screen.blit(s.image_rot, s.image_rot_rect.topleft)
+
+  #   # new_image = methods.paint(s.image_rot,"cyan")
+  #   # globals.screen.blit(new_image, s.image_rot_rect)
+  #   # ^ this is a working way to color things
+
+  # elif p.get_is_swinging():
+  #   swing_alpha = math.degrees(methods.get_alpha(p.get_x(), p.get_y(),s.mouse_was))
+  #   s.image_rot = pygame.transform.rotate(s.image, swing_alpha - 90 - 60 + 15 * 8)
+
+  #   # pop arc from center of player
+  #   swing_alpha_2 = math.radians(swing_alpha - 60 + 15 * 8)
+  #   x = s.rect.center[0] + math.cos(swing_alpha_2) * globals.size/2
+  #   y = s.rect.center[1] - math.sin(swing_alpha_2) * globals.size/2
+  #   s.image_rot_rect = s.image_rot.get_rect(center = (x,y))
+  #   s.swing_mask = pygame.mask.from_surface(s.image_rot)
+
+  #   for thing in enemy_list:
+  #     offset_x2 = thing.rect.left - s.image_rot_rect.left
+  #     offset_y2 = thing.rect.top - s.image_rot_rect.top
+
+  #     #this rectangle collision is messy
+  #     if s.image.get_rect().colliderect(thing.enemy_surf.get_rect()):
+  #       if s.swing_mask.overlap(thing.enemy_mask,(offset_x2,offset_y2)):
+  #         thing.reset()
+  #         # thing.kill(enemy_list)
+
+  #   globals.screen.blit(s.image_rot, s.image_rot_rect.topleft)
+    
+
+  # else:
+  #   p.move(mouse_pos)
+  #   p.update()
+  #   s.update()
+
+  #   resting_alpha = math.degrees(methods.get_alpha(p.get_x(), p.get_y(),mouse_pos))
+  #   s.image_rot = pygame.transform.rotate(s.image, resting_alpha - 90 - 60)
+
+  #   # pop arc from center of player
+  #   resting_alpha_2 = math.radians(resting_alpha - 60)
+  #   x = s.rect.center[0] + math.cos(resting_alpha_2) * globals.size/2
+  #   y = s.rect.center[1] - math.sin(resting_alpha_2) * globals.size/2
+  #   s.image_rot_rect = s.image_rot.get_rect(center = (x,y))
+
+  #   globals.screen.blit(s.image_rot, s.image_rot_rect)
+
+
+  #   # globals.screen.blit(s.image_rot, s.rect)
+  #   # i think i had to use s.image_rot_rect instead of s.rect
+
+  # for thing in enemy_list:
+  #   thing.move()
+  #   thing.update()
+    
+
+
+  # for thing in enemy_list:
+  #   offset_x = thing.rect.left - p.rect.left
+  #   offset_y = thing.rect.top - p.rect.top
+    
+  #   if p.rect.colliderect(thing.rect):
+  #     if p.player_mask.overlap(thing.enemy_mask,(offset_x,offset_y)):
+  #       p.set_color('cyan')
+  #       break
+  #     else:
+  #       p.set_color('white')
+  #   else:
+  #     p.set_color('white')
+
+  # # RENDER YOUR GAME HERE
+
+
+
+
+
   time_diff = globals.ticks - p.swing_start
   # counts frames since beginning of swing
 
   # wet code
 
-  if time_diff == 40:
-    p.set_is_swinging(False)
 
-  elif p.get_is_swinging() and time_diff <= 15:
-    # every frame we will rotate the original image, then recenter it
-    
-    swing_alpha = math.degrees(methods.get_alpha(p.get_x(), p.get_y(),s.mouse_was))
-    s.image_rot = pygame.transform.rotate(s.image, swing_alpha - 90 - 60 + time_diff * 8)
-    
-    # pop arc from center of player
-    swing_alpha_2 = math.radians(swing_alpha - 60 + time_diff * 8)
-    x = s.rect.center[0] + math.cos(swing_alpha_2) * globals.size/2
-    y = s.rect.center[1] - math.sin(swing_alpha_2) * globals.size/2
-    s.image_rot_rect = s.image_rot.get_rect(center = (x,y))
-    s.swing_mask = pygame.mask.from_surface(s.image_rot)
-
-    for thing in enemy_list:
-      offset_x2 = thing.rect.left - s.image_rot_rect.left
-      offset_y2 = thing.rect.top - s.image_rot_rect.top
-
-      #this rectangle collision is messy
-      if s.image.get_rect().colliderect(thing.enemy_surf.get_rect()):
-        if s.swing_mask.overlap(thing.enemy_mask,(offset_x2,offset_y2)):
-          thing.reset()
-          # thing.kill(enemy_list)
-
-    globals.screen.blit(s.image_rot, s.image_rot_rect.topleft)
-
-    # new_image = methods.paint(s.image_rot,"cyan")
-    # globals.screen.blit(new_image, s.image_rot_rect)
-    # ^ this is a working way to color things
-
-  elif p.get_is_swinging():
-    swing_alpha = math.degrees(methods.get_alpha(p.get_x(), p.get_y(),s.mouse_was))
-    s.image_rot = pygame.transform.rotate(s.image, swing_alpha - 90 - 60 + 15 * 8)
-
-    # pop arc from center of player
-    swing_alpha_2 = math.radians(swing_alpha - 60 + 15 * 8)
-    x = s.rect.center[0] + math.cos(swing_alpha_2) * globals.size/2
-    y = s.rect.center[1] - math.sin(swing_alpha_2) * globals.size/2
-    s.image_rot_rect = s.image_rot.get_rect(center = (x,y))
-    s.swing_mask = pygame.mask.from_surface(s.image_rot)
-
-    for thing in enemy_list:
-      offset_x2 = thing.rect.left - s.image_rot_rect.left
-      offset_y2 = thing.rect.top - s.image_rot_rect.top
-
-      #this rectangle collision is messy
-      if s.image.get_rect().colliderect(thing.enemy_surf.get_rect()):
-        if s.swing_mask.overlap(thing.enemy_mask,(offset_x2,offset_y2)):
-          thing.reset()
-          # thing.kill(enemy_list)
-
-    globals.screen.blit(s.image_rot, s.image_rot_rect.topleft)
-    
-
-  else:
+  # what to do if we are not swinging our sword
+  if not p.get_is_swinging():
     p.move(mouse_pos)
     p.update()
     s.update()
 
-    resting_alpha = math.degrees(methods.get_alpha(p.get_x(), p.get_y(),mouse_pos))
-    s.image_rot = pygame.transform.rotate(s.image, resting_alpha - 90 - 60)
+    resting_alpha = math.degrees(methods.get_alpha(p.get_x(), p.get_y(),mouse_pos)) - 60
+    # the alpha for not is_swinging we subtracted 60 from this value
+    s.alpha = resting_alpha
+    s.frame_val = 0
 
-    # pop arc from center of player
-    resting_alpha_2 = math.radians(resting_alpha - 60)
-    x = s.rect.center[0] + math.cos(resting_alpha_2) * globals.size/2
-    y = s.rect.center[1] - math.sin(resting_alpha_2) * globals.size/2
+    s.image_rot = pygame.transform.rotate(s.image, s.alpha - 90 + s.frame_val)
+
+
+    # pop arc from center of player 1
+    new_alpha = math.radians(s.alpha + s.frame_val)
+    x = s.rect.center[0] + math.cos(new_alpha) * globals.size/2
+    y = s.rect.center[1] - math.sin(new_alpha) * globals.size/2
     s.image_rot_rect = s.image_rot.get_rect(center = (x,y))
 
     globals.screen.blit(s.image_rot, s.image_rot_rect)
 
 
-    # globals.screen.blit(s.image_rot, s.rect)
-    # i think i had to use s.image_rot_rect instead of s.rect
+  #stop swinging after 40 frames
+  elif time_diff == 40:
+    p.set_is_swinging(False)
 
-  for thing in enemy_list:
-    thing.move()
-    thing.update()
-    
+  elif time_diff <= 15:
+    # every frame we will rotate the original image, then recenter it
+
+    swing_alpha = math.degrees(methods.get_alpha(p.get_x(), p.get_y(),s.mouse_was)) - 60
+    # the alpha for swinging we subtracted 60 from this value
+    s.alpha = swing_alpha
+    s.frame_val = time_diff * 8
 
 
+    s.image_rot = pygame.transform.rotate(s.image, s.alpha - 90 + s.frame_val)
+
+    # pop arc from center of player 2
+    new_alpha = math.radians(s.alpha + s.frame_val)
+    x = s.rect.center[0] + math.cos(new_alpha) * globals.size/2
+    y = s.rect.center[1] - math.sin(new_alpha) * globals.size/2
+    s.image_rot_rect = s.image_rot.get_rect(center = (x,y))
+    s.swing_mask = pygame.mask.from_surface(s.image_rot)
+
+
+    for thing in enemy_list:
+      offset_x2 = thing.rect.left - s.image_rot_rect.left
+      offset_y2 = thing.rect.top - s.image_rot_rect.top
+
+      #this rectangle collision is messy
+      if s.image.get_rect().colliderect(thing.enemy_surf.get_rect()) and s.swing_mask.overlap(thing.enemy_mask,(offset_x2,offset_y2)):
+        thing.reset()
+        # thing.kill(enemy_list)
+
+    globals.screen.blit(s.image_rot, s.image_rot_rect)
+
+    # new_image = methods.paint(s.image_rot,"cyan")
+    # globals.screen.blit(new_image, s.image_rot_rect)
+    # ^ this is a working way to color things
+
+
+
+  # make sword rest after a swing
+  else:
+    swing_alpha = math.degrees(methods.get_alpha(p.get_x(), p.get_y(),s.mouse_was)) - 60
+    # the alpha for just after swinging -60
+    s.alpha = swing_alpha
+    s.frame_val = 15 * 8
+
+    s.image_rot = pygame.transform.rotate(s.image, s.alpha - 90 + s.frame_val)
+
+
+    # pop arc from center of player 3
+    new_alpha = math.radians(s.alpha + s.frame_val)
+    x = s.rect.center[0] + math.cos(new_alpha) * globals.size/2
+    y = s.rect.center[1] - math.sin(new_alpha) * globals.size/2
+    s.image_rot_rect = s.image_rot.get_rect(center = (x,y))
+    s.swing_mask = pygame.mask.from_surface(s.image_rot)
+
+
+    for thing in enemy_list:
+      offset_x2 = thing.rect.left - s.image_rot_rect.left
+      offset_y2 = thing.rect.top - s.image_rot_rect.top
+
+      #this rectangle collision is messy
+      if s.image.get_rect().colliderect(thing.enemy_surf.get_rect()) and s.swing_mask.overlap(thing.enemy_mask,(offset_x2,offset_y2)):
+        thing.reset()
+        # thing.kill(enemy_list)
+
+    globals.screen.blit(s.image_rot, s.image_rot_rect)
+
+
+  # this is checking collision and then moving the enemies 
   for thing in enemy_list:
     offset_x = thing.rect.left - p.rect.left
     offset_y = thing.rect.top - p.rect.top
-    
-    if p.rect.colliderect(thing.rect):
-      if p.player_mask.overlap(thing.enemy_mask,(offset_x,offset_y)):
-        p.set_color('cyan')
-        break
-      else:
-        p.set_color('white')
-    else:
-      p.set_color('white')
+
+    if p.rect.colliderect(thing.rect) and p.player_mask.overlap(thing.enemy_mask,(offset_x,offset_y)):
+      p.set_color('cyan')
+
+    thing.move()
+    thing.update()
+
+
 
   # RENDER YOUR GAME HERE
+
+
   pygame.draw.rect(globals.screen, "white", (0,0,globals.width+globals.size * 2,globals.height+globals.size * 2),globals.size)
   for thing in enemy_list:
     globals.screen.blit(thing.enemy_surf,thing.rect.topleft)
