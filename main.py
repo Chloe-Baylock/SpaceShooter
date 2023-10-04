@@ -34,8 +34,7 @@ s = swing.Swing(p)
 enemy_count = []
 enemy_list = []
 
-methods.make_enemies(4, enemy_count, enemy_list)
-
+methods.make_enemies(1, enemy_count, enemy_list)
 
 swing_group = pygame.sprite.Group()
 swing_group.add(s)
@@ -60,9 +59,8 @@ while running:
           # e.reset()
           pass
         if event.key == pygame.K_a:
-          print(p.x)
-          print(p.y)
-          print(mouse_pos)
+          print(p.rect)
+          print(enemy_list[0].rect)
         if event.key == pygame.K_s:
           pass
         if event.key == pygame.K_ESCAPE:
@@ -89,8 +87,8 @@ while running:
     s.swing_mask = pygame.mask.from_surface(s.image_rot)
 
     for thing in enemy_list:
-      offset_x2 = thing.get_x() - s.image_rot_rect.left
-      offset_y2 = thing.get_y() - s.image_rot_rect.top
+      offset_x2 = thing.rect.left - s.image_rot_rect.left
+      offset_y2 = thing.rect.top - s.image_rot_rect.top
 
       #this rectangle collision is messy
       if s.image.get_rect().colliderect(thing.enemy_surf.get_rect()):
@@ -100,9 +98,9 @@ while running:
 
     globals.screen.blit(s.image_rot, s.image_rot_rect)
 
-    # new_image = s.paint(s.image_rot,"cyan")
+    # new_image = methods.paint(s.image_rot,"cyan")
     # globals.screen.blit(new_image, s.image_rot_rect)
-    # ^ this is a working way to color things I believe
+    # ^ this is a working way to color things
 
   else:
     p.move(mouse_pos)
@@ -111,24 +109,28 @@ while running:
 
   for thing in enemy_list:
     thing.move()
+    thing.update()
     
 
 
   for thing in enemy_list:
-    offset_x = thing.get_x() - p.get_x()
-    offset_y = thing.get_y() - p.get_y()
-    if p.player_mask.overlap(thing.enemy_mask,(offset_x,offset_y)):
-      p.player_surf.fill('cyan')
-      break
+    offset_x = thing.rect.left - p.rect.left
+    offset_y = thing.rect.top - p.rect.top
+    
+    if p.rect.colliderect(thing.rect):
+      if p.player_mask.overlap(thing.enemy_mask,(offset_x,offset_y)):
+        p.set_color('cyan')
+        break
+      else:
+        p.set_color('white')
     else:
-      p.player_surf.fill('white')
+      p.set_color('white')
 
   # RENDER YOUR GAME HERE
   pygame.draw.rect(globals.screen, "white", (0,0,globals.width+globals.size * 2,globals.height+globals.size * 2),globals.size)
   for thing in enemy_list:
-    globals.screen.blit(thing.enemy_surf,(thing.get_x(),thing.get_y()))
+    globals.screen.blit(thing.enemy_surf,thing.rect.topleft)
   globals.screen.blit(p.image,p.rect.topleft)
-  # globals.screen.blit(p.image,(p.x,p.y))
   # ^ walls, enemy, player
 
 

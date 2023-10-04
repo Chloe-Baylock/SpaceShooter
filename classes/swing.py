@@ -17,16 +17,8 @@ class Swing (pygame.sprite.Sprite):
 
     # self.anim_1_image = pygame.image.load('sprites/swing_anim_1.png')
 
-  def paint(self, main_image, color):
-    colored_image = pygame.Surface(main_image.get_size())
-    colored_image.fill(color)
-
-    copy_image = main_image.copy()
-    copy_image.blit(colored_image,(0,0), special_flags = pygame.BLEND_MULT)
-    return copy_image
-
   def get_center(self):
     pass
 
   def update(self):
-    self.rect = self.image.get_rect(center = (self.gamer.get_x(), self.gamer.get_y()))
+    self.rect.center = (self.gamer.get_x(), self.gamer.get_y())

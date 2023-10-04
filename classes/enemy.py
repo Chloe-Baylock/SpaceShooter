@@ -11,7 +11,7 @@ class Enemy():
     self.speed = 3
 
     self.enemy_surf = pygame.Surface((globals.size, globals.size))
-    self.rect = self.enemy_surf.get_rect()
+    self.rect = self.enemy_surf.get_rect(center = (self.x,self.y))
     self.enemy_mask = pygame.mask.from_surface(self.enemy_surf)
 
     self.color = "dark green"
@@ -55,4 +55,4 @@ class Enemy():
     enemy_list.remove(self)
 
   def update(self):
-    self.rect = self.enemy_surf.get_rect(center = (self.get_center()[0], self.get_center()[1]))
+    self.rect.center = (self.get_x(), self.get_y())

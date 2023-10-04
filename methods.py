@@ -1,4 +1,4 @@
-import math
+import math, pygame
 from classes import enemy
 
 def unit_vector (your_x,your_y,mousePos):
@@ -24,3 +24,11 @@ def make_enemies(num_to_make, enemy_count, enemy_list):
     enemy_count.append(len(enemy_count))
     enemy_count[-1] = enemy.Enemy()
     enemy_list.append(enemy_count[-1])
+
+def paint(main_image, color):
+  colored_image = pygame.Surface(main_image.get_size())
+  colored_image.fill(color)
+
+  copy_image = main_image.copy()
+  copy_image.blit(colored_image,(0,0), special_flags = pygame.BLEND_MULT)
+  return copy_image
