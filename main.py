@@ -14,8 +14,8 @@ from classes import *
 
 
 # TODO:
+# player carries sword
 # swing trail
-# become a circle instead of a square
 # combo counter
 # sound effect
 # fix rectangle collision mess
@@ -34,7 +34,7 @@ s = swing.Swing(p)
 enemy_count = []
 enemy_list = []
 
-methods.make_enemies(1, enemy_count, enemy_list)
+methods.make_enemies(5, enemy_count, enemy_list)
 
 swing_group = pygame.sprite.Group()
 swing_group.add(s)
@@ -59,8 +59,9 @@ while running:
           # e.reset()
           pass
         if event.key == pygame.K_a:
-          print(p.rect)
-          print(enemy_list[0].rect)
+          # print(p.rect)
+          # print(s.rect)
+          print(resting_alpha)
         if event.key == pygame.K_s:
           pass
         if event.key == pygame.K_ESCAPE:
@@ -96,7 +97,7 @@ while running:
           thing.reset()
           # thing.kill(enemy_list)
 
-    globals.screen.blit(s.image_rot, s.image_rot_rect)
+    globals.screen.blit(s.image_rot, s.image_rot_rect.topleft)
 
     # new_image = methods.paint(s.image_rot,"cyan")
     # globals.screen.blit(new_image, s.image_rot_rect)
@@ -106,6 +107,21 @@ while running:
     p.move(mouse_pos)
     p.update()
     s.update()
+
+    resting_alpha = math.degrees(methods.get_alpha(p.get_x(), p.get_y(),mouse_pos))
+    s.image_rot = pygame.transform.rotate(s.image, resting_alpha - 90 - 60)
+
+    # pop arc from center of player
+    resting_alpha_2 = math.radians(resting_alpha - 60)
+    x = s.rect.center[0] + math.cos(resting_alpha_2) * globals.size/2
+    y = s.rect.center[1] - math.sin(resting_alpha_2) * globals.size/2
+    s.image_rot_rect = s.image_rot.get_rect(center = (x,y))
+
+    globals.screen.blit(s.image_rot, s.image_rot_rect)
+
+
+    # globals.screen.blit(s.image_rot, s.rect)
+    # i think i had to use s.image_rot_rect instead of s.rect
 
   for thing in enemy_list:
     thing.move()

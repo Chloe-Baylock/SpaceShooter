@@ -1,5 +1,4 @@
 import pygame
-import globals
 
 class Swing (pygame.sprite.Sprite):
   def __init__(self, gamer):

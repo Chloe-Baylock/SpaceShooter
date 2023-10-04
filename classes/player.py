@@ -1,4 +1,4 @@
-import pygame
+import pygame, math
 import globals, methods
 
 class Player():
@@ -18,7 +18,7 @@ class Player():
     self.swing_image = pygame.Surface((40,40))
     self.is_swinging = False
 
-    self.swing_start = 0
+    self.swing_start = math.inf
 
   def move(self, mousePos):
     dirX = mousePos[0] - self.get_x()
