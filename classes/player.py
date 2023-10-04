@@ -3,10 +3,12 @@ import globals, methods
 
 class Player():
   def __init__(self):
-    self.x = globals.size
-    self.y = globals.size
-    self.player_surf = pygame.Surface((globals.size, globals.size))
-    self.rect = self.player_surf.get_rect(center = (300, 300))
+    self.x = globals.size/2
+    self.y = globals.size/2
+    self.image = pygame.image.load('sprites/circle.png').convert_alpha()
+    # self.player_surf = pygame.Surface((globals.size, globals.size))
+    self.player_surf = pygame.Surface(self.image.get_size())
+    self.rect = self.player_surf.get_rect()
     self.player_mask = pygame.mask.from_surface(self.player_surf)
 
     self.color = 'white'
@@ -54,8 +56,8 @@ class Player():
   def get_y(self):
     return self.y
 
-  def get_center(self):
-    return ((self.get_x() + globals.size/2, self.get_y() + globals.size/2))
+  def get_top_left(self):
+    return ((self.get_x() - globals.size/2, self.get_y() - globals.size/2))
 
   def swing(self, weapon):
     self.isSwinging = True
