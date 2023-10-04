@@ -98,6 +98,7 @@ while running:
           # thing.kill(enemy_list)
 
     globals.screen.blit(s.image_rot, s.image_rot_rect)
+    s.image_rot.blit(s.colorImage, s.image_rot_rect, special_flags = pygame.BLEND_RGBA_MULT)
   else:
     p.move(mouse_pos)
     s.update()
