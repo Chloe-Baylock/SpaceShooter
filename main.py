@@ -14,8 +14,7 @@ from classes import *
 
 
 # TODO:
-# swing animation
-# update hitbox with animation
+# swing trail
 # become a circle instead of a square
 # combo counter
 # sound effect
@@ -107,6 +106,7 @@ while running:
 
   else:
     p.move(mouse_pos)
+    p.update()
     s.update()
 
   for thing in enemy_list:
@@ -127,8 +127,9 @@ while running:
   pygame.draw.rect(globals.screen, "white", (0,0,globals.width+globals.size * 2,globals.height+globals.size * 2),globals.size)
   for thing in enemy_list:
     globals.screen.blit(thing.enemy_surf,(thing.get_x(),thing.get_y()))
-  globals.screen.blit(p.image,p.get_top_left())
-  # ^ walls, enemy, player, enemy point
+  globals.screen.blit(p.image,p.rect.topleft)
+  # globals.screen.blit(p.image,(p.x,p.y))
+  # ^ walls, enemy, player
 
 
   # flip() the display to put your work on screen

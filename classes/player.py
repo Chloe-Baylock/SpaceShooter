@@ -6,9 +6,8 @@ class Player():
     self.x = globals.size/2
     self.y = globals.size/2
     self.image = pygame.image.load('sprites/circle.png').convert_alpha()
-    # self.player_surf = pygame.Surface((globals.size, globals.size))
     self.player_surf = pygame.Surface(self.image.get_size())
-    self.rect = self.player_surf.get_rect()
+    self.rect = self.player_surf.get_rect(center = (self.x, self.y))
     self.player_mask = pygame.mask.from_surface(self.player_surf)
 
     self.color = 'white'
@@ -83,5 +82,5 @@ class Player():
     self.is_swinging = val
 
 
-  # def update(self):
-  #   self.rect = self.image.get_rect(center = (self.gamer.get_x() + globals.size/2, self.gamer.get_y() + globals.size/2))
+  def update(self):
+    self.rect = self.image.get_rect(center = (self.get_x(),self.get_y()))
