@@ -29,7 +29,7 @@ while run:
 
     color_image = changColor(image, color)
 
-    window.fill((96, 96, 64))
+    window.fill((255, 255, 255))
     window.blit(color_image, color_image.get_rect(center = window.get_rect().center))
     pygame.display.flip()
 

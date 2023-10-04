@@ -15,13 +15,18 @@ class Swing (pygame.sprite.Sprite):
     # self.image_rot = pygame.image.load('sprites/184pxswing.png').convert_alpha()
     self.image_rot_rect = self.image_rot.get_rect(center = (300, 300))
 
-    self.colorImage = pygame.Surface(self.image_rot.get_size()).convert_alpha()
-    self.colorImage.fill("red")
-
     self.mouse_was = (0,0)
 
 
     # self.anim_1_image = pygame.image.load('sprites/swing_anim_1.png')
+
+  def paint(self, main_image, color):
+    colored_image = pygame.Surface(main_image.get_size())
+    colored_image.fill(color)
+
+    copy_image = main_image.copy()
+    copy_image.blit(colored_image,(0,0), special_flags = pygame.BLEND_MULT)
+    return copy_image
 
   def get_center(self):
     pass
