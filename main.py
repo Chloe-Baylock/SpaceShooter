@@ -14,7 +14,6 @@ from classes import *
 
 
 # TODO:
-# player carries sword
 # swing trail
 # combo counter
 # sound effect
@@ -78,6 +77,9 @@ while running:
   if not p.get_is_swinging():
     p.move(mouse_pos)
     p.update()
+    player_alpha = math.degrees(methods.get_alpha(p.get_x(), p.get_y(),mouse_pos))
+    p.image_rot = pygame.transform.rotate(p.image, player_alpha - 90)
+    
     s.update()
 
     resting_alpha = math.degrees(methods.get_alpha(p.get_x(), p.get_y(),mouse_pos)) - 60
@@ -87,7 +89,7 @@ while running:
 
 
   #stop swinging after 40 frames
-  elif time_diff == 40:
+  elif time_diff >= 40:
     p.set_is_swinging(False)
 
   elif time_diff <= 15:
@@ -146,7 +148,7 @@ while running:
   pygame.draw.rect(globals.screen, "white", (0,0,globals.width+globals.size * 2,globals.height+globals.size * 2),globals.size)
   for thing in enemy_list:
     globals.screen.blit(thing.enemy_surf,thing.rect.topleft)
-  globals.screen.blit(p.image,p.rect.topleft)
+  globals.screen.blit(p.image_rot,p.rect.topleft)
   # ^ walls, enemy, player
 
 
