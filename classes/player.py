@@ -12,6 +12,7 @@ class Player():
     self.player_mask = pygame.mask.from_surface(self.player_surf)
 
     self.image_rot = pygame.image.load('sprites/circle.png').convert_alpha()
+    self.image_rot_rect = self.image_rot.get_rect(center = (self.x, self.y))
 
     self.color = 'white'
     self.player_surf.fill(self.color)

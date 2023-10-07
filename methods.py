@@ -1,4 +1,4 @@
-import math, pygame
+import math, pygame, globals
 from classes import enemy
 
 def unit_vector (your_x,your_y,mousePos):
@@ -32,3 +32,9 @@ def paint(main_image, color):
   copy_image = main_image.copy()
   copy_image.blit(colored_image,(0,0), special_flags = pygame.BLEND_MULT)
   return copy_image
+
+# def pop_arc(s):
+#   new_alpha = math.radians(s.alpha + s.frame_val)
+#   x = s.rect.center[0] + math.cos(new_alpha) * globals.size/2
+#   y = s.rect.center[1] - math.sin(new_alpha) * globals.size/2
+#   return (x,y)

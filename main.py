@@ -73,17 +73,19 @@ while running:
   time_diff = globals.ticks - p.swing_start
   # counts frames since beginning of swing
 
+
   # what to do if we are not swinging our sword
-  if not p.get_is_swinging():
+  if p.get_is_swinging() == False:
     p.move(mouse_pos)
     p.update()
-    player_alpha = math.degrees(methods.get_alpha(p.get_x(), p.get_y(),mouse_pos))
+    player_alpha = math.degrees(methods.get_alpha(p.x, p.y,mouse_pos))
     p.image_rot = pygame.transform.rotate(p.image, player_alpha - 90)
+    p.image_rot_rect = p.image_rot.get_rect(center = (p.get_x(), p.get_y()))
     
     s.update()
 
     resting_alpha = math.degrees(methods.get_alpha(p.get_x(), p.get_y(),mouse_pos)) - 60
-    # the alpha for not is_swinging we subtracted 60 from this value
+    # the alpha for not swinging we subtracted 60 from this value
     s.alpha = resting_alpha
     s.frame_val = 0
 
@@ -99,6 +101,9 @@ while running:
     # the alpha for swinging we subtracted 60 from this value
     s.alpha = swing_alpha
     s.frame_val = time_diff * 8
+    
+
+    
 
 
   # make sword rest after a swing
@@ -107,15 +112,27 @@ while running:
     # the alpha for just after swinging -60
     s.alpha = swing_alpha
     s.frame_val = 15 * 8
+    
+    # swing trail here
+    # s.deg8_rot = pygame.transform.rotate(s.deg8, s.alpha - 90 + s.frame_val - 8)
+
+
+
 
   s.image_rot = pygame.transform.rotate(s.image, s.alpha - 90 + s.frame_val)
   s.swing_mask = pygame.mask.from_surface(s.image_rot)
+
+
+
 
   # pop arc from center of player
   new_alpha = math.radians(s.alpha + s.frame_val)
   x = s.rect.center[0] + math.cos(new_alpha) * globals.size/2
   y = s.rect.center[1] - math.sin(new_alpha) * globals.size/2
   s.image_rot_rect = s.image_rot.get_rect(center = (x,y))
+
+
+
 
   if p.get_is_swinging():
     for thing in enemy_list:
@@ -148,7 +165,7 @@ while running:
   pygame.draw.rect(globals.screen, "white", (0,0,globals.width+globals.size * 2,globals.height+globals.size * 2),globals.size)
   for thing in enemy_list:
     globals.screen.blit(thing.enemy_surf,thing.rect.topleft)
-  globals.screen.blit(p.image_rot,p.rect.topleft)
+  globals.screen.blit(p.image_rot,p.image_rot_rect.topleft)
   # ^ walls, enemy, player
 
 
