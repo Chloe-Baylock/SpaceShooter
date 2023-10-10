@@ -101,6 +101,12 @@ while running:
     # the alpha for swinging we subtracted 60 from this value
     s.alpha = swing_alpha
     s.frame_val = time_diff * 8
+
+    # swing trail here
+    # s.deg8_rot = pygame.transform.rotate(s.deg8, s.alpha + s.frame_val - 8)
+
+    # globals.screen.blit(s.deg8_rot, s.image_rot_rect)
+
     
 
     
@@ -112,9 +118,6 @@ while running:
     # the alpha for just after swinging -60
     s.alpha = swing_alpha
     s.frame_val = 15 * 8
-    
-    # swing trail here
-    # s.deg8_rot = pygame.transform.rotate(s.deg8, s.alpha - 90 + s.frame_val - 8)
 
 
 
@@ -132,7 +135,13 @@ while running:
   s.image_rot_rect = s.image_rot.get_rect(center = (x,y))
 
 
+  # swing trail here
+  x2 = s.rect.center[0] + math.cos(new_alpha - 8) * globals.size/2
+  y2 = s.rect.center[1] - math.sin(new_alpha - 8) * globals.size/2
+  s.deg8_rot_rect = s.deg8_rot.get_rect(center = (x2,y2))
 
+  s.deg8_rot = pygame.transform.rotate(s.deg8, s.alpha + s.frame_val - 8)
+  globals.screen.blit(s.deg8_rot, s.image_rot_rect)
 
   if p.get_is_swinging():
     for thing in enemy_list:
@@ -144,8 +153,7 @@ while running:
         thing.reset()
         # thing.kill(enemy_list)
 
-  globals.screen.blit(s.image_rot, s.image_rot_rect)
-
+  # globals.screen.blit(s.image_rot, s.image_rot_rect)
 
   # this is checking player collision and then moving the enemies 
   for thing in enemy_list:

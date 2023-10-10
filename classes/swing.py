@@ -15,9 +15,9 @@ class Swing (pygame.sprite.Sprite):
     self.alpha = 0
     self.frame_val = 0
 
-    # self.deg8 = pygame.image.load('sprites/deg8.png').convert_alpha()
-    # self.deg8_rot = pygame.image.load('sprites/deg8.png').convert_alpha()
-
+    self.deg8 = pygame.image.load('sprites/deg8.png').convert_alpha()
+    self.deg8_rot = pygame.image.load('sprites/deg8.png').convert_alpha()
+    self.deg8_rot_rect = self.deg8_rot.get_rect(center = (300,300))
 
   def get_center(self):
     pass
