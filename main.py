@@ -105,16 +105,38 @@ while running:
 
 
     # SWING TRAIL HERE
-    trail_alpha = math.degrees(methods.get_alpha(p.get_x(), p.get_y(), s.mouse_was)) - 60
-    trail_alpha_frames = math.radians(trail_alpha + (s.frame_val - 1))
+    trail_alpha_frames = math.radians(swing_alpha + s.frame_val - 8)
 
-    s.deg8_rot = pygame.transform.rotate(s.deg8, trail_alpha + s.frame_val - 8)
-    trail_x = s.rect.center[0] + math.cos(trail_alpha) * globals.size/2
-    trail_y = s.rect.center[1] - math.sin(trail_alpha) * globals.size/2
-    s.deg8_rot_rect = s.deg8_rot.get_rect(center = (x,y))
+    s.deg8_rot = pygame.transform.rotate(s.deg8, math.degrees(trail_alpha_frames))
+    trail_x = s.rect.center[0] + math.cos(trail_alpha_frames) * globals.size/2
+    trail_y = s.rect.center[1] - math.sin(trail_alpha_frames) * globals.size/2
+    s.deg8_rot_rect = s.deg8_rot.get_rect(center = (trail_x,trail_y))
 
     globals.screen.blit(s.deg8_rot, s.deg8_rot_rect)
 
+
+    trail_2_frames = math.radians(swing_alpha + s.frame_val - 16)
+
+    s.deg8_rot = pygame.transform.rotate(s.deg8, math.degrees(trail_2_frames))
+    trail_2_x = s.rect.center[0] + math.cos(trail_2_frames) * globals.size/2
+    trail_2_y = s.rect.center[1] - math.sin(trail_2_frames) * globals.size/2
+
+    s.deg8_rot_rect = s.deg8_rot.get_rect(center = (trail_2_x,trail_2_y))
+    new_img = methods.paint(s.deg8_rot,(240, 240, 240, 255))
+    globals.screen.blit(new_img, s.deg8_rot_rect)
+
+
+
+
+    trail_3_frames = math.radians(swing_alpha + s.frame_val - 24)
+
+    s.deg8_rot = pygame.transform.rotate(s.deg8, math.degrees(trail_3_frames))
+    trail_3_x = s.rect.center[0] + math.cos(trail_3_frames) * globals.size/2
+    trail_3_y = s.rect.center[1] - math.sin(trail_3_frames) * globals.size/2
+
+    s.deg8_rot_rect = s.deg8_rot.get_rect(center = (trail_3_x,trail_3_y))
+    new_img_3 = methods.paint(s.deg8_rot,(225, 225, 225, 255))
+    globals.screen.blit(new_img_3, s.deg8_rot_rect)
     
 
     
@@ -143,13 +165,6 @@ while running:
   s.image_rot_rect = s.image_rot.get_rect(center = (x,y))
 
 
-  # # swing trail here
-  # x2 = s.rect.center[0] + math.cos(new_alpha - 8) * globals.size/2
-  # y2 = s.rect.center[1] - math.sin(new_alpha - 8) * globals.size/2
-  # s.deg8_rot_rect = s.deg8_rot.get_rect(center = (x2,y2))
-
-  # s.deg8_rot = pygame.transform.rotate(s.deg8, s.alpha + s.frame_val - 8)
-  # globals.screen.blit(s.deg8_rot, s.image_rot_rect)
 
   if p.get_is_swinging():
     for thing in enemy_list:
