@@ -15,7 +15,7 @@ class Player():
     self.image_rot_rect = self.image_rot.get_rect(center = (self.x, self.y))
 
     self.color = 'white'
-    self.player_surf.fill(self.color)
+    # self.player_surf.fill(self.color)
 
     self.weapon = "fire"
     self.swing_image = pygame.Surface((40,40))

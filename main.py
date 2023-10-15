@@ -42,7 +42,6 @@ swing_group.add(s)
 
 while running:
   mouse_pos = pygame.mouse.get_pos()
-  p.set_color('white')
   # poll for events
   # pygame.QUIT event means the user clicked X to close your window
   for event in pygame.event.get():
@@ -67,7 +66,9 @@ while running:
         if event.key == pygame.K_ESCAPE:
           running = False
 
+
   globals.screen.fill("gray")
+  p.set_color('white')
 
 
   time_diff = globals.ticks - p.swing_start
@@ -78,9 +79,9 @@ while running:
   if p.get_is_swinging() == True and time_diff <= 19:
     # check timediff vals in function
     swing_alpha = math.degrees(methods.get_alpha(p.get_x(), p.get_y(),s.mouse_was)) - 60
-    methods.swing_trail(s, swing_alpha, time_diff - 1, (255,255,255,255))
-    methods.swing_trail(s, swing_alpha, time_diff - 2, (240,240,240,255))
-    methods.swing_trail(s, swing_alpha, time_diff - 3, (225,225,225,255))
+    methods.swing_trail(s, swing_alpha, time_diff - 1, (240,240,240,255))
+    methods.swing_trail(s, swing_alpha, time_diff - 2, (230,230,230,255))
+    methods.swing_trail(s, swing_alpha, time_diff - 3, (220,220,220,255))
     methods.swing_trail(s, swing_alpha, time_diff - 4, (210,210,210,255))
 
 
@@ -164,6 +165,9 @@ while running:
     thing.update()
 
 
+  # because we set color after the rotated image, we have to paint it one more time each frame.
+  player_image = methods.paint(p.image_rot, p.color)
+
 
   # RENDER YOUR GAME HERE
 
@@ -171,7 +175,7 @@ while running:
   pygame.draw.rect(globals.screen, "white", (0,0,globals.width+globals.size * 2,globals.height+globals.size * 2),globals.size)
   for thing in enemy_list:
     globals.screen.blit(thing.enemy_surf,thing.rect.topleft)
-  globals.screen.blit(p.image_rot,p.image_rot_rect.topleft)
+  globals.screen.blit(player_image,p.image_rot_rect.topleft)
   # ^ walls, enemy, player
 
 
