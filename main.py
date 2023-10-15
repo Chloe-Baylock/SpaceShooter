@@ -105,38 +105,11 @@ while running:
 
 
     # SWING TRAIL HERE
-    trail_alpha_frames = math.radians(swing_alpha + s.frame_val - 8)
 
-    s.deg8_rot = pygame.transform.rotate(s.deg8, math.degrees(trail_alpha_frames))
-    trail_x = s.rect.center[0] + math.cos(trail_alpha_frames) * globals.size/2
-    trail_y = s.rect.center[1] - math.sin(trail_alpha_frames) * globals.size/2
-    s.deg8_rot_rect = s.deg8_rot.get_rect(center = (trail_x,trail_y))
+    methods.swing_trail(s, swing_alpha, 8, (255,255,255,255))
+    methods.swing_trail(s, swing_alpha, 16, (235,235,235,255))
+    methods.swing_trail(s, swing_alpha, 24, (215,215,215,255))
 
-    globals.screen.blit(s.deg8_rot, s.deg8_rot_rect)
-
-
-    trail_2_frames = math.radians(swing_alpha + s.frame_val - 16)
-
-    s.deg8_rot = pygame.transform.rotate(s.deg8, math.degrees(trail_2_frames))
-    trail_2_x = s.rect.center[0] + math.cos(trail_2_frames) * globals.size/2
-    trail_2_y = s.rect.center[1] - math.sin(trail_2_frames) * globals.size/2
-
-    s.deg8_rot_rect = s.deg8_rot.get_rect(center = (trail_2_x,trail_2_y))
-    new_img = methods.paint(s.deg8_rot,(240, 240, 240, 255))
-    globals.screen.blit(new_img, s.deg8_rot_rect)
-
-
-
-
-    trail_3_frames = math.radians(swing_alpha + s.frame_val - 24)
-
-    s.deg8_rot = pygame.transform.rotate(s.deg8, math.degrees(trail_3_frames))
-    trail_3_x = s.rect.center[0] + math.cos(trail_3_frames) * globals.size/2
-    trail_3_y = s.rect.center[1] - math.sin(trail_3_frames) * globals.size/2
-
-    s.deg8_rot_rect = s.deg8_rot.get_rect(center = (trail_3_x,trail_3_y))
-    new_img_3 = methods.paint(s.deg8_rot,(225, 225, 225, 255))
-    globals.screen.blit(new_img_3, s.deg8_rot_rect)
     
 
     
