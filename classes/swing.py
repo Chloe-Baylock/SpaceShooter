@@ -13,7 +13,9 @@ class Swing (pygame.sprite.Sprite):
 
     self.mouse_was = (0,0)
     self.alpha = 0
+
     self.frame_val = 0
+    # this tells the game where to put the sword
 
     self.deg8 = pygame.image.load('sprites/deg8.png').convert_alpha()
     self.deg8_rot = pygame.image.load('sprites/deg8.png').convert_alpha()

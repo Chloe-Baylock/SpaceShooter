@@ -33,14 +33,14 @@ def paint(main_image, color):
   copy_image.blit(colored_image,(0,0), special_flags = pygame.BLEND_MULT)
   return copy_image
 
-# this function modifies things and returns nothing
-def swing_trail(s, swing_alpha, delay, color):
-  trail_alpha = math.radians(swing_alpha + s.frame_val - delay)
-  mid = pop_arc(s, trail_alpha)
-  s.deg8_rot = pygame.transform.rotate(s.deg8, math.degrees(trail_alpha))
-  s.deg8_rot_rect = s.deg8_rot.get_rect(center = mid)
-  colored = paint(s.deg8_rot, color)
-  globals.screen.blit(colored, s.deg8_rot_rect)
+def swing_trail(s, swing_alpha, timer, color):
+  if timer >= 0 and timer <= 14:
+    trail_alpha = math.radians(swing_alpha + timer * 8)
+    mid = pop_arc(s, trail_alpha)
+    copy = pygame.transform.rotate(s.deg8, math.degrees(trail_alpha))
+    copy_rect = copy.get_rect(center = mid)
+    colored_copy = paint(copy, color)
+    globals.screen.blit(colored_copy, copy_rect)
 
 def pop_arc(s, alpha):
   x = s.rect.center[0] + math.cos(alpha) * globals.size/2

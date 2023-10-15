@@ -74,6 +74,16 @@ while running:
   # counts frames since beginning of swing
 
 
+  # swing trail here
+  if p.get_is_swinging() == True and time_diff <= 19:
+    # check timediff vals in function
+    swing_alpha = math.degrees(methods.get_alpha(p.get_x(), p.get_y(),s.mouse_was)) - 60
+    methods.swing_trail(s, swing_alpha, time_diff - 1, (255,255,255,255))
+    methods.swing_trail(s, swing_alpha, time_diff - 2, (240,240,240,255))
+    methods.swing_trail(s, swing_alpha, time_diff - 3, (225,225,225,255))
+    methods.swing_trail(s, swing_alpha, time_diff - 4, (210,210,210,255))
+
+
   # what to do if we are not swinging our sword
   if p.get_is_swinging() == False:
     p.move(mouse_pos)
@@ -104,16 +114,6 @@ while running:
 
 
 
-    # SWING TRAIL HERE
-
-    methods.swing_trail(s, swing_alpha, 8, (255,255,255,255))
-    methods.swing_trail(s, swing_alpha, 16, (235,235,235,255))
-    methods.swing_trail(s, swing_alpha, 24, (215,215,215,255))
-
-    
-
-    
-
 
   # make sword rest after a swing
   else:
@@ -121,6 +121,8 @@ while running:
     # the alpha for just after swinging -60
     s.alpha = swing_alpha
     s.frame_val = 15 * 8
+
+
 
 
 
