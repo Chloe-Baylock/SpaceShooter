@@ -19,7 +19,8 @@ class Enemy():
     self.point_x = random.randint(1, globals.width)
     self.point_y = random.randint(1, globals.height)
 
-    self.hp = 10
+    self.max_hp = 10
+    self.hp = self.max_hp
     self.is_invincible = False
 
   def get_x(self):

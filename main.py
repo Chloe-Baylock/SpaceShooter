@@ -14,13 +14,11 @@ from classes import *
 
 
 # TODO:
-# swing trail
 # combo counter
 # sound effect
 # fix rectangle collision mess
 # enemy death splat for a few seconds
 # enemy spawning
-
 
 pygame.init()
 clock = pygame.time.Clock()
@@ -41,6 +39,7 @@ swing_group.add(s)
 
 
 while running:
+
   mouse_pos = pygame.mouse.get_pos()
   # poll for events
   # pygame.QUIT event means the user clicked X to close your window
@@ -152,10 +151,12 @@ while running:
       #this rectangle collision is messy
       if s.image.get_rect().colliderect(thing.enemy_surf.get_rect()) and s.swing_mask.overlap(thing.enemy_mask,(offset_x2,offset_y2)):
         if thing.is_invincible == False:
-          thing.hp -= 5
+          thing.hp -= p.get_damage()
           thing.is_invincible = True
+          thing.enemy_surf.fill("orange")
           if thing.hp <= 0:
-            thing.hp = 10
+            thing.hp = thing.max_hp
+            thing.enemy_surf.fill("dark green")
             thing.reset()
           # thing.kill(enemy_list)
 
@@ -184,6 +185,10 @@ while running:
     globals.screen.blit(thing.enemy_surf,thing.rect.topleft)
   globals.screen.blit(player_image,p.image_rot_rect.topleft)
   # ^ walls, enemy, player
+
+  font = pygame.font.SysFont("Arial", 30)
+  img = font.render("hello", True, (0, 0, 0, 255))
+  globals.screen.blit(img, (300, 300))
 
 
   # flip() the display to put your work on screen

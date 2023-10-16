@@ -89,6 +89,9 @@ class Player():
     if color != self.color:
       self.image = methods.paint(self.original_image, color)
       self.color = color
+  
+  def get_damage(self):
+    return 5
 
   def update(self):
     self.rect.center = (self.get_x(),self.get_y())
