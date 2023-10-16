@@ -104,6 +104,8 @@ while running:
   #stop swinging after 40 frames
   elif time_diff >= 40:
     p.set_is_swinging(False)
+    for thing in enemy_list:
+      thing.is_invincible = False
 
   elif time_diff <= 15:
     # every frame we will rotate the original image, then recenter it
@@ -149,8 +151,13 @@ while running:
 
       #this rectangle collision is messy
       if s.image.get_rect().colliderect(thing.enemy_surf.get_rect()) and s.swing_mask.overlap(thing.enemy_mask,(offset_x2,offset_y2)):
-        thing.reset()
-        # thing.kill(enemy_list)
+        if thing.is_invincible == False:
+          thing.hp -= 5
+          thing.is_invincible = True
+          if thing.hp <= 0:
+            thing.hp = 10
+            thing.reset()
+          # thing.kill(enemy_list)
 
   globals.screen.blit(s.image_rot, s.image_rot_rect)
 
