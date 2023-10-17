@@ -151,12 +151,12 @@ while running:
       #this rectangle collision is messy
       if s.image.get_rect().colliderect(thing.enemy_surf.get_rect()) and s.swing_mask.overlap(thing.enemy_mask,(offset_x2,offset_y2)):
         if thing.is_invincible == False:
-          thing.hp -= p.get_damage()
+          damage = p.damage_roll()
+          thing.hp -= damage
           thing.is_invincible = True
-          text_surf = globals.font.render(str(p.get_damage()), True, (255, 255, 0, 255))
+          text_surf = globals.font.render(str(damage), True, (255, 255, 0, 255))
           text_surf_rect = text_surf.get_rect(center = thing.get_xy())
           p.damages.append([text_surf, text_surf_rect, pygame.time.get_ticks()])
-          print(p.damages)
           thing.enemy_surf.fill("orange")
           if thing.hp <= 0:
             thing.hp = thing.max_hp

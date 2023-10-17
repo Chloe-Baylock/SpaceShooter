@@ -1,4 +1,4 @@
-import pygame, math
+import pygame, math, random
 import globals, methods
 
 class Player():
@@ -96,6 +96,12 @@ class Player():
   
   def get_damage(self):
     return self.damage
+
+  def damage_roll(self):
+    low = .5 * self.damage
+    high = 2 * self.damage
+    roll = random.randint(math.floor(low),math.ceil(high))
+    return roll
 
   def update(self):
     self.rect.center = (self.get_x(),self.get_y())
