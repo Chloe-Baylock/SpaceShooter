@@ -23,6 +23,10 @@ class Player():
 
     self.swing_start = math.inf
 
+    self.damage = 5
+    self.damages = []
+
+
   def move(self, mousePos):
     dirX = mousePos[0] - self.get_x()
     dirY = mousePos[1] - self.get_y()
@@ -91,7 +95,7 @@ class Player():
       self.color = color
   
   def get_damage(self):
-    return 5
+    return self.damage
 
   def update(self):
     self.rect.center = (self.get_x(),self.get_y())

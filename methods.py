@@ -46,3 +46,6 @@ def pop_arc(s, alpha):
   x = s.rect.center[0] + math.cos(alpha) * globals.size/2
   y = s.rect.center[1] - math.sin(alpha) * globals.size/2
   return (x,y)
+
+def show_damage():
+  pass
