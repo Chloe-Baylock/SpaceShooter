@@ -153,9 +153,10 @@ while running:
         if thing.is_invincible == False:
           thing.hp -= p.get_damage()
           thing.is_invincible = True
-          text_surf = globals.font.render("5", True, (255, 255, 0, 255))
-          text_surf_rect = text_surf.get_rect(center = (thing.x, thing.y))
+          text_surf = globals.font.render(str(p.get_damage()), True, (255, 255, 0, 255))
+          text_surf_rect = text_surf.get_rect(center = thing.get_xy())
           p.damages.append([text_surf, text_surf_rect, pygame.time.get_ticks()])
+          print(p.damages)
           thing.enemy_surf.fill("orange")
           if thing.hp <= 0:
             thing.hp = thing.max_hp
@@ -191,12 +192,12 @@ while running:
 
 
   # damage text
+  # text_ls [text, text rect, time]
   for text_ls in p.damages:
     tick_diff = pygame.time.get_ticks() - text_ls[2]
     if (tick_diff < 1000):
       y_val = text_ls[1].top - (1.5 + 2 * tick_diff/1000) * globals.size
-      # globals.screen.blit(text_ls[0], (text_ls[1].get_x(), y_val))
-      globals.screen.blit(text_ls[0], (text_surf_rect.left, y_val))
+      globals.screen.blit(text_ls[0], (text_ls[1].left, y_val))
     else:
       p.damages.remove(text_ls)
 

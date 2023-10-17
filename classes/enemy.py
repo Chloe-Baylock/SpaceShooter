@@ -29,6 +29,9 @@ class Enemy():
   def get_y(self):
     return self.y
 
+  def get_xy(self):
+    return (self.x,self.y)
+
   def set_x(self, val):
     self.x = val
 
