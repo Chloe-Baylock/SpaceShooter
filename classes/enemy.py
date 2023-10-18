@@ -14,7 +14,13 @@ class Enemy():
     self.rect = self.enemy_surf.get_rect(center = (self.x,self.y))
     self.enemy_mask = pygame.mask.from_surface(self.enemy_surf)
 
-    self.color = "dark green"
+    self.color = (0, 200, 0, 255)
+    # red, green, blue
+    # 0, 200    = green
+    # 255, 125  = bright orange
+    # 255, 0    = bright red
+
+
     self.enemy_surf.fill(self.color)
     self.point_x = random.randint(1, globals.width)
     self.point_y = random.randint(1, globals.height)
@@ -47,6 +53,8 @@ class Enemy():
     
     self.point_x = random.randint(1, globals.width)
     self.point_y = random.randint(1, globals.height)
+
+    self.enemy_surf.fill(self.color)
 
   def move(self):
     unit_vec = methods.unit_vector(self.get_x(), self.get_y(), ((self.point_x,self.point_y)))

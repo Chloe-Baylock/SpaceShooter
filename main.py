@@ -157,10 +157,16 @@ while running:
           text_surf = globals.font.render(str(damage), True, (255, 255, 0, 255))
           text_surf_rect = text_surf.get_rect(center = thing.get_xy())
           p.damages.append([text_surf, text_surf_rect, pygame.time.get_ticks()])
-          thing.enemy_surf.fill("orange")
-          if thing.hp <= 0:
+          if thing.hp > 0:
+            per = thing.hp/thing.max_hp
+            if per >= .5:
+              thing.enemy_surf.fill((255, 200 + 150 * (per - 1), 0, 255))
+              # from 0, 200 to 255, 125
+            else:
+              thing.enemy_surf.fill((255, 250 * per, 0, 255))
+              #from 255, 125 to 155, 0
+          elif thing.hp <= 0:
             thing.hp = thing.max_hp
-            thing.enemy_surf.fill("dark green")
             thing.reset()
           # thing.kill(enemy_list)
 
@@ -183,7 +189,7 @@ while running:
 
   # RENDER YOUR GAME HERE
 
-  # health bars
+  # enemy health bars
   bar_width = 6
   for thing in enemy_list:
     bar_xi = thing.get_x() - 30
@@ -197,12 +203,13 @@ while running:
     pygame.draw.line(globals.screen, "red", (bar_xi,bar_yi), (bar_xf, bar_yf), bar_width)
     pygame.draw.line(globals.screen, "green", (bar_xi,bar_yi), (curr_health_x, bar_yf), bar_width)
     # border, max, curr
+    globals.screen.blit(thing.enemy_surf,thing.rect.topleft)
+    # draw enemy
+    # drawing enemy from rect and bar from enemy x and y so maybe that is the problem 
 
   pygame.draw.rect(globals.screen, "white", (0,0,globals.width+globals.size * 2,globals.height+globals.size * 2),globals.size)
-  for thing in enemy_list:
-    globals.screen.blit(thing.enemy_surf,thing.rect.topleft)
   globals.screen.blit(player_image,p.image_rot_rect.topleft)
-  # ^ walls, enemy, player
+  # ^ walls, player
 
 
 
