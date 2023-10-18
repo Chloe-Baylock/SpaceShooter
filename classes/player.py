@@ -26,6 +26,8 @@ class Player():
     self.damage = 5
     self.damages = []
 
+    self.is_holding_down = False
+
 
   def move(self, mousePos):
     dirX = mousePos[0] - self.get_x()

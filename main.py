@@ -46,13 +46,17 @@ while running:
   for event in pygame.event.get():
     if event.type == pygame.QUIT:
       running = False
-    elif event.type == pygame.MOUSEBUTTONDOWN:
+    if event.type == pygame.MOUSEBUTTONDOWN:
       if event.button == 1:
+        p.is_holding_down = True
         if p.is_swinging == False:
           p.set_is_swinging(True)
           p.swing_start = globals.ticks
           s.mouse_was = mouse_pos
-    elif event.type == pygame.KEYDOWN:
+    if event.type == pygame.MOUSEBUTTONUP:
+      if event.button == 1:
+        p.is_holding_down = False
+    if event.type == pygame.KEYDOWN:
         if event.key == pygame.K_r:
           # e.reset()
           pass
@@ -105,6 +109,11 @@ while running:
     p.set_is_swinging(False)
     for thing in enemy_list:
       thing.is_invincible = False
+
+    # if holding left click, swing again
+    if p.is_holding_down == True:
+      p.set_is_swinging(True)
+      p.swing_start = globals.ticks
 
   elif time_diff <= 15:
     # every frame we will rotate the original image, then recenter it
