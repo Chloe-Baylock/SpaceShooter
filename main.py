@@ -159,12 +159,7 @@ while running:
           p.damages.append([text_surf, text_surf_rect, pygame.time.get_ticks()])
           if thing.hp > 0:
             per = thing.hp/thing.max_hp
-            if per >= .5:
-              thing.enemy_surf.fill((255, 200 + 150 * (per - 1), 0, 255))
-              # from 0, 200 to 255, 125
-            else:
-              thing.enemy_surf.fill((255, 250 * per, 0, 255))
-              #from 255, 125 to 155, 0
+            thing.enemy_surf.fill(methods.color_grad(per))
           elif thing.hp <= 0:
             thing.hp = thing.max_hp
             thing.reset()

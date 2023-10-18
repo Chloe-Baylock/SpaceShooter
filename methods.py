@@ -47,5 +47,42 @@ def pop_arc(s, alpha):
   y = s.rect.center[1] - math.sin(alpha) * globals.size/2
   return (x,y)
 
+# using LCH colors 
+def color_grad(per):
+  if per > .9:
+    return ((0, 255, 0, 255))
+  elif per > .8:
+    return ((111, 237, 0, 255))
+  elif per > .7:
+    return ((152, 219, 0, 255))
+  elif per > .6:
+    return ((182, 199, 0, 255))
+  elif per > .5:
+    return ((205, 178, 0, 255))
+  elif per > .4:
+    return ((223, 155, 0, 255))
+  elif per > .3:
+    return ((238, 130, 0, 255))
+  elif per > .2:
+    return ((248, 102, 0, 255))
+  elif per > .1:
+    return ((254, 68, 0, 255))
+  elif per > 0:
+    return ((255, 0, 0, 255))
+  pass
+
+# rgb(0, 255, 0)
+# rgb(111, 237, 0)
+# rgb(152, 219, 0)
+# rgb(182, 199, 0)
+# rgb(205, 178, 0)
+# rgb(223, 155, 0)
+# rgb(238, 130, 0)
+# rgb(248, 102, 0)
+# rgb(254, 68, 0)
+# rgb(255, 0, 0)
+
+  pass
+
 def show_damage():
   pass
