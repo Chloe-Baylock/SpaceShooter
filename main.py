@@ -183,6 +183,20 @@ while running:
 
   # RENDER YOUR GAME HERE
 
+  # health bars
+  bar_width = 6
+  for thing in enemy_list:
+    bar_xi = thing.get_x() - 30
+    bar_xf = thing.get_x() + 30
+    bar_yi = thing.get_y() + globals.size
+    bar_yf = thing.get_y() + globals.size
+    percent_hp = thing.hp / thing.max_hp
+    bar_length = bar_xf - bar_xi
+    curr_health_x = bar_xi + percent_hp * bar_length
+    pygame.draw.line(globals.screen, "black", (bar_xi - 2,bar_yi), (bar_xf + 2,bar_yf), bar_width + 4)
+    pygame.draw.line(globals.screen, "red", (bar_xi,bar_yi), (bar_xf, bar_yf), bar_width)
+    pygame.draw.line(globals.screen, "green", (bar_xi,bar_yi), (curr_health_x, bar_yf), bar_width)
+    # border, max, curr
 
   pygame.draw.rect(globals.screen, "white", (0,0,globals.width+globals.size * 2,globals.height+globals.size * 2),globals.size)
   for thing in enemy_list:
@@ -191,12 +205,13 @@ while running:
   # ^ walls, enemy, player
 
 
+
   # damage text
   # text_ls [text, text rect, time]
   for text_ls in p.damages:
     tick_diff = pygame.time.get_ticks() - text_ls[2]
-    if (tick_diff < 1000):
-      y_val = text_ls[1].top - (1.5 + 2 * tick_diff/1000) * globals.size
+    if (tick_diff < 600):
+      y_val = text_ls[1].top - (1.5 + 2 * tick_diff/800) * globals.size
       globals.screen.blit(text_ls[0], (text_ls[1].left, y_val))
     else:
       p.damages.remove(text_ls)
