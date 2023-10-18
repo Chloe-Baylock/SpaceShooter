@@ -101,7 +101,7 @@ class Player():
     low = .5 * self.damage
     high = 2 * self.damage
     roll = random.randint(math.floor(low),math.ceil(high))
-    return 1
+    return roll
 
   def update(self):
     self.rect.center = (self.get_x(),self.get_y())

@@ -198,7 +198,11 @@ while running:
     pygame.draw.line(globals.screen, "red", (bar_xi,bar_yi), (bar_xf, bar_yf), bar_width)
     pygame.draw.line(globals.screen, "green", (bar_xi,bar_yi), (curr_health_x, bar_yf), bar_width)
     # border, max, curr
+
+
     globals.screen.blit(thing.enemy_surf,thing.rect.topleft)
+    pygame.draw.rect(globals.screen,"black",thing.rect, 1)
+
     # draw enemy
     # drawing enemy from rect and bar from enemy x and y so maybe that is the problem 
 
