@@ -14,9 +14,10 @@ from classes import *
 
 
 # TODO:
+# sword drawn later with everything else
+# splat dissapears after a while
 # combo counter
 # sound effect
-# fix rectangle collision mess
 # enemy death splat for a few seconds
 # enemy spawning
 
@@ -30,6 +31,7 @@ s = swing.Swing(p)
 
 enemy_count = []
 enemy_list = []
+splat_list = []
 
 methods.make_enemies(5, enemy_count, enemy_list)
 
@@ -171,8 +173,9 @@ while running:
             thing.enemy_surf.fill(methods.color_grad(per))
           elif thing.hp <= 0:
             thing.hp = thing.max_hp
-            thing.reset()
-          # thing.kill(enemy_list)
+            # thing.reset()
+            splat_list.append(thing)
+            thing.kill(enemy_list)
 
   globals.screen.blit(s.image_rot, s.image_rot_rect)
 
@@ -193,6 +196,11 @@ while running:
 
   # RENDER YOUR GAME HERE
 
+  for thing in splat_list:
+    thing.splat_rect.center = (thing.get_x(), thing.get_y())
+    globals.screen.blit(thing.splat_img, thing.splat_rect)
+
+
   # enemy health bars
   bar_width = 6
   for thing in enemy_list:
@@ -211,14 +219,12 @@ while running:
 
     globals.screen.blit(thing.enemy_surf,thing.rect.topleft)
     pygame.draw.rect(globals.screen,"black",thing.rect, 1)
+    # draw enemy then enemy outline
 
-    # draw enemy
-    # drawing enemy from rect and bar from enemy x and y so maybe that is the problem 
 
   pygame.draw.rect(globals.screen, "white", (0,0,globals.width+globals.size * 2,globals.height+globals.size * 2),globals.size)
   globals.screen.blit(player_image,p.image_rot_rect.topleft)
   # ^ walls, player
-
 
 
   # damage text

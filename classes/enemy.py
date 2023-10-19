@@ -31,6 +31,9 @@ class Enemy():
     self.hp = self.max_hp
     self.is_invincible = False
 
+    self.splat_img = pygame.image.load('sprites/splat.png').convert_alpha()
+    self.splat_rect = self.splat_img.get_rect(center = (300,300))
+
   def get_x(self):
     return self.x
 
