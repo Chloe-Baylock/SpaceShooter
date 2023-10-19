@@ -60,6 +60,7 @@ class Enemy():
     self.point_y = random.randint(1, globals.height)
 
     self.enemy_surf.fill(self.color)
+    self.is_invincible = False
 
   def move(self):
     unit_vec = methods.unit_vector(self.get_x(), self.get_y(), ((self.point_x,self.point_y)))

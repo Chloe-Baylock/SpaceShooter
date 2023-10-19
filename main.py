@@ -15,10 +15,8 @@ from classes import *
 
 # TODO:
 # sword drawn later with everything else
-# splat dissapears after a while
 # combo counter
 # sound effect
-# enemy death splat for a few seconds
 # enemy spawning
 
 pygame.init()
@@ -174,10 +172,22 @@ while running:
           elif thing.hp <= 0:
             thing.hp = thing.max_hp
             # thing.reset()
-            splat_list.append(thing)
+            splat_list.append([thing, pygame.time.get_ticks()])
             thing.kill(enemy_list)
 
   globals.screen.blit(s.image_rot, s.image_rot_rect)
+
+  # splat
+  for x in splat_list:
+    (thing , time) = x
+    t = pygame.time.get_ticks() - time
+    if t > 1000:
+      splat_list.remove(x)
+      thing.reset()
+      enemy_list.append(thing)
+    else:
+      thing.splat_rect.center = (thing.get_x(), thing.get_y())
+
 
   # this is checking player collision and then moving the enemies 
   for thing in enemy_list:
@@ -194,12 +204,11 @@ while running:
   player_image = methods.paint(p.image_rot, p.color)
 
 
+
   # RENDER YOUR GAME HERE
 
-  for thing in splat_list:
-    thing.splat_rect.center = (thing.get_x(), thing.get_y())
+  for (thing, time) in splat_list:
     globals.screen.blit(thing.splat_img, thing.splat_rect)
-
 
   # enemy health bars
   bar_width = 6
@@ -228,12 +237,12 @@ while running:
 
 
   # damage text
-  # text_ls [text, text rect, time]
   for text_ls in p.damages:
-    tick_diff = pygame.time.get_ticks() - text_ls[2]
+    [text, text_rect, time] = text_ls
+    tick_diff = pygame.time.get_ticks() - time
     if (tick_diff < 600):
-      y_val = text_ls[1].top - (1.5 + 2 * tick_diff/800) * globals.size
-      globals.screen.blit(text_ls[0], (text_ls[1].left, y_val))
+      y_val = text_rect.top - (1.5 + 2 * tick_diff/800) * globals.size
+      globals.screen.blit(text, (text_rect.left, y_val))
     else:
       p.damages.remove(text_ls)
 
