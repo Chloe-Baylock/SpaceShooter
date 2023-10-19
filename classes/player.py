@@ -25,6 +25,7 @@ class Player():
 
     self.damage = 5
     self.damages = []
+    self.crit_chance = 2
 
     self.is_holding_down = False
 
@@ -100,10 +101,14 @@ class Player():
     return self.damage
 
   def damage_roll(self):
-    low = .5 * self.damage
-    high = 2 * self.damage
+    did_crit = False
+    low = .9 * self.damage
+    high = 1.1 * self.damage
     roll = random.randint(math.floor(low),math.ceil(high))
-    return roll
+    if random.randint(1, 101) <= self.crit_chance * 2:
+      roll *= 2
+      did_crit = True
+    return (roll, did_crit)
 
   def update(self):
     self.rect.center = (self.get_x(),self.get_y())

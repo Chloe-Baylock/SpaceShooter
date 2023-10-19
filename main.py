@@ -160,10 +160,15 @@ while running:
       #this rectangle collision is messy
       if s.image.get_rect().colliderect(thing.enemy_surf.get_rect()) and s.swing_mask.overlap(thing.enemy_mask,(offset_x2,offset_y2)):
         if thing.is_invincible == False:
-          damage = p.damage_roll()
+          (damage, did_crit) = p.damage_roll()
           thing.hp -= damage
           thing.is_invincible = True
-          text_surf = globals.font.render(str(damage), True, (255, 255, 0, 255))
+
+          font = pygame.font.SysFont("Arial", 30)  
+          if did_crit == True:
+            font = pygame.font.SysFont("Arial", 40)  
+
+          text_surf = font.render(str(damage), True, (255, 255, 0, 255))
           text_surf_rect = text_surf.get_rect(center = thing.get_xy())
           p.damages.append([text_surf, text_surf_rect, pygame.time.get_ticks()])
           if thing.hp > 0:
