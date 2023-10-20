@@ -27,9 +27,13 @@ running = True
 p = player.Player()
 s = swing.Swing(p)
 
-enemy_count = []
-enemy_list = []
+enemy_snake = snake.Snake()
+enemy_count = [enemy_snake]
+enemy_list = [enemy_snake]
 splat_list = []
+
+print(enemy_snake.color)
+print(enemy_snake.x)
 
 methods.make_enemies(5, enemy_count, enemy_list)
 
@@ -61,9 +65,7 @@ while running:
           # e.spawn()
           pass
         if event.key == pygame.K_a:
-          # print(p.rect)
-          # print(s.rect)
-          print(resting_alpha)
+          print(pygame.time.get_ticks())
         if event.key == pygame.K_s:
           pass
         if event.key == pygame.K_ESCAPE:
@@ -77,6 +79,10 @@ while running:
   time_diff = globals.ticks - p.swing_start
   # counts frames since beginning of swing
 
+  # generate enemies over time
+  if pygame.time.get_ticks() >= globals.run_time + 5000:
+    methods.make_enemies(3, enemy_count, enemy_list)
+    globals.run_time += 5000
 
   # swing trail here
   if p.get_is_swinging() == True and time_diff <= 19:
@@ -168,7 +174,11 @@ while running:
           if did_crit == True:
             font = pygame.font.SysFont("Arial", 40)  
 
-          text_surf = font.render(str(damage), True, (255, 255, 0, 255))
+          if did_crit == True:
+            text_surf = font.render(str(damage), True, (255, 0, 0, 255))
+          else:
+            text_surf = font.render(str(damage), True, (255, 255, 0, 255))
+
           text_surf_rect = text_surf.get_rect(center = thing.get_xy())
           p.damages.append([text_surf, text_surf_rect, pygame.time.get_ticks()])
           if thing.hp > 0:
@@ -188,12 +198,12 @@ while running:
     t = pygame.time.get_ticks() - time
     if t > 1000:
       splat_list.remove(x)
-      thing.spawn()
-      thing.update()
-      enemy_list.append(thing)
+      # thing.spawn()
+      # thing.update()
+      # enemy_list.append(thing)
+      pass
     else:
-      thing.splat_rect.center = (thing.get_x(), thing.get_y())
-
+      thing.splat_rect.center = (thing.get_xy())
 
   # this is checking player collision and then moving the enemies 
   for thing in enemy_list:

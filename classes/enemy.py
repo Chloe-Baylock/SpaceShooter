@@ -54,16 +54,16 @@ class Enemy():
 
   def spawn(self):
     side = random.randint(1, 4)
-    self.x = random.randint(1, globals.width)
-    self.y = random.randint(1, globals.height)
+    self.x = random.randint(-32, globals.width)
+    self.y = random.randint(-32, globals.height)
     if side == 1:
-      self.y = 0
+      self.y = -32
     if side == 2:
-      self.x = globals.width
+      self.x = globals.width + 32
     if side == 3:
-      self.y = globals.height
+      self.y = globals.height + 32
     if side == 4:
-      self.x = 0
+      self.x = -32
     
     self.point_x = random.randint(1, globals.width)
     self.point_y = random.randint(1, globals.height)
@@ -85,4 +85,4 @@ class Enemy():
     enemy_list.remove(self)
 
   def update(self):
-    self.rect.center = (self.get_x(), self.get_y())
+    self.rect.center = (self.get_xy())

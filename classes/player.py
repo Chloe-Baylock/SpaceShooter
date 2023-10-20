@@ -105,7 +105,7 @@ class Player():
     low = .9 * self.damage
     high = 1.1 * self.damage
     roll = random.randint(math.floor(low),math.ceil(high))
-    if random.randint(1, 100) <= self.crit_chance * 2:
+    if random.randint(1, 100) <= self.crit_chance:
       roll *= 2
       did_crit = True
     return (roll, did_crit)

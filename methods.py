@@ -24,7 +24,7 @@ def make_enemies(num_to_make, enemy_count, enemy_list):
     enemy_count.append(len(enemy_count))
     enemy_count[-1] = enemy.Enemy()
     enemy_list.append(enemy_count[-1])
-    enemy_count[-1].spawn()
+    enemy_list[-1].spawn()
 
 def paint(main_image, color):
   colored_image = pygame.Surface(main_image.get_size())
