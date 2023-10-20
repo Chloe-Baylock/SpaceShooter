@@ -58,7 +58,7 @@ while running:
         p.is_holding_down = False
     if event.type == pygame.KEYDOWN:
         if event.key == pygame.K_r:
-          # e.reset()
+          # e.spawn()
           pass
         if event.key == pygame.K_a:
           # print(p.rect)
@@ -176,7 +176,7 @@ while running:
             thing.enemy_surf.fill(methods.color_grad(per))
           elif thing.hp <= 0:
             thing.hp = thing.max_hp
-            # thing.reset()
+            # thing.spawn()
             splat_list.append([thing, pygame.time.get_ticks()])
             thing.kill(enemy_list)
 
@@ -188,7 +188,8 @@ while running:
     t = pygame.time.get_ticks() - time
     if t > 1000:
       splat_list.remove(x)
-      thing.reset()
+      thing.spawn()
+      thing.update()
       enemy_list.append(thing)
     else:
       thing.splat_rect.center = (thing.get_x(), thing.get_y())

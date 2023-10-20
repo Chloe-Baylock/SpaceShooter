@@ -5,8 +5,8 @@ import globals, methods
 
 class Enemy():
   def __init__(self):
-    self.x = random.randint(1, globals.width)
-    self.y = random.randint(1, globals.height)
+    self.x = 0
+    self.y = 0
 
     self.speed = 3
 
@@ -52,9 +52,18 @@ class Enemy():
   def get_center(self):
     return ((self.get_x() + globals.size/2, self.get_y() + globals.size/2))
 
-  def reset(self):
+  def spawn(self):
+    side = random.randint(1, 4)
     self.x = random.randint(1, globals.width)
     self.y = random.randint(1, globals.height)
+    if side == 1:
+      self.y = 0
+    if side == 2:
+      self.x = globals.width
+    if side == 3:
+      self.y = globals.height
+    if side == 4:
+      self.x = 0
     
     self.point_x = random.randint(1, globals.width)
     self.point_y = random.randint(1, globals.height)

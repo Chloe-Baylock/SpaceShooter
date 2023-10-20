@@ -3,8 +3,8 @@ import globals, methods
 
 class Player():
   def __init__(self):
-    self.x = globals.size/2
-    self.y = globals.size/2
+    self.x = globals.width/2
+    self.y = globals.height/2
     self.original_image = pygame.image.load('sprites/circle.png').convert_alpha()
     self.image = pygame.image.load('sprites/circle.png').convert_alpha()
     self.player_surf = pygame.Surface(self.image.get_size())
