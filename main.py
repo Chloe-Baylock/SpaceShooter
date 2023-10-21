@@ -2,22 +2,17 @@ import pygame, math
 import globals, methods
 from classes import *
 
-# # people recommend against from... import* therefore I am doing this
-# #---
-# import classes
-# from os.path import dirname, basename, isfile, join
-# modules = classes.classes(join(dirname(__file__), "*.py"))
-# __all__ = [basename(f)[:-3] for f in modules if isfile(f) and not f.endswith('__init__.py')]
-# #---
-
-# I unfortunately cannot quite understand this. ^
-
 
 # TODO:
 # sword drawn later with everything else
 # combo counter
 # sound effect
-# enemy spawning
+# snake enemy
+# gas enemy
+# gas + base enemy collision
+# make enemy art
+# give animations
+# make sound effects
 
 pygame.init()
 clock = pygame.time.Clock()

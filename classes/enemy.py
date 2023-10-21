@@ -54,16 +54,16 @@ class Enemy():
 
   def spawn(self):
     side = random.randint(1, 4)
-    self.x = random.randint(-32, globals.width)
-    self.y = random.randint(-32, globals.height)
+    self.x = random.randint(-globals.size, globals.width)
+    self.y = random.randint(-globals.size, globals.height)
     if side == 1:
-      self.y = -32
+      self.y = -globals.size
     if side == 2:
-      self.x = globals.width + 32
+      self.x = globals.width + globals.size
     if side == 3:
-      self.y = globals.height + 32
+      self.y = globals.height + globals.size
     if side == 4:
-      self.x = -32
+      self.x = -globals.size
     
     self.point_x = random.randint(1, globals.width)
     self.point_y = random.randint(1, globals.height)
