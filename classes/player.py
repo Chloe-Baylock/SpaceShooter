@@ -28,6 +28,7 @@ class Player():
     self.crit_chance = 2
 
     self.is_holding_down = False
+    self.kill_count = 0
 
 
   def move(self, mousePos):

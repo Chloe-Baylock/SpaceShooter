@@ -22,13 +22,10 @@ running = True
 p = player.Player()
 s = swing.Swing(p)
 
-enemy_snake = snake.Snake()
-enemy_count = [enemy_snake]
-enemy_list = [enemy_snake]
+# enemy_snake = snake.Snake()
+enemy_count = []
+enemy_list = []
 splat_list = []
-
-print(enemy_snake.color)
-print(enemy_snake.x)
 
 methods.make_enemies(5, enemy_count, enemy_list)
 
@@ -184,6 +181,10 @@ while running:
             # thing.spawn()
             splat_list.append([thing, pygame.time.get_ticks()])
             thing.kill(enemy_list)
+            p.kill_count += 1
+            if p.kill_count % 50 == 0:
+              p.damage += 1
+              print(p.damage)
 
   globals.screen.blit(s.image_rot, s.image_rot_rect)
 

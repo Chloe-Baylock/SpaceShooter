@@ -70,7 +70,7 @@ def color_grad(per):
     return ((254, 68, 0, 255))
   elif per > 0:
     return ((255, 0, 0, 255))
-  pass
+  print('error negative percent')
 
 # rgb(0, 255, 0)
 # rgb(111, 237, 0)
@@ -83,7 +83,9 @@ def color_grad(per):
 # rgb(254, 68, 0)
 # rgb(255, 0, 0)
 
-  pass
 
-def show_damage():
+def spawn_food():
+  red_surf = pygame.Surface(globals.size,globals.size)
+  red_rect = red_surf.get_rect(center = (300, 300))
+  globals.screen.blit(red_surf, red_rect)
   pass

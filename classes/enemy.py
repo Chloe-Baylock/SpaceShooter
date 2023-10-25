@@ -15,12 +15,6 @@ class Enemy():
     self.enemy_mask = pygame.mask.from_surface(self.enemy_surf)
 
     self.color = (0, 255, 0, 255)
-    # red, green, blue
-    # 0, 200    = green
-    # 255, 125  = bright orange
-    # 255, 0    = bright red
-
-    # green -> yellow -> red
 
 
     self.enemy_surf.fill(self.color)
