@@ -1,5 +1,5 @@
 import math, pygame, globals
-from classes import enemy
+from classes import *
 
 def unit_vector (your_x,your_y,mousePos):
   x_vector = mousePos[0] - your_x
@@ -23,8 +23,21 @@ def make_enemies(num_to_make, enemy_count, enemy_list):
   for x in range(num_to_make):
     enemy_count.append(len(enemy_count))
     enemy_count[-1] = enemy.Enemy()
-    enemy_list.append(enemy_count[-1])
-    enemy_list[-1].spawn()
+    enemy_list.append((enemy_count[-1], 'basic'))
+    (target, enemy_type) = enemy_list[-1]
+    target.spawn()
+
+
+# i want to pass in a list of specs, then ... the list to give the specs to the smokey
+def make_smokey(enemy_count, enemy_list):
+  enemy_count.append(len(enemy_count))
+  enemy_count[-1] = smokey.Smokey()
+  # put specs here ^
+
+  enemy_list.append((enemy_count[-1], 'smokey'))
+  (target, enemy_type) = enemy_list[-1]
+  target.spawn()
+
 
 def paint(main_image, color):
   colored_image = pygame.Surface(main_image.get_size())

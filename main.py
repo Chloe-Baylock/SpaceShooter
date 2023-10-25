@@ -106,7 +106,8 @@ while running:
   elif time_diff >= 40:
     p.set_is_swinging(False)
     for thing in enemy_list:
-      thing.is_invincible = False
+      (target, enemy_type) = thing
+      target.is_invincible = False
 
     # if holding left click, swing again
     if p.is_holding_down == True:
@@ -152,15 +153,16 @@ while running:
 
   if p.get_is_swinging():
     for thing in enemy_list:
-      offset_x2 = thing.rect.left - s.image_rot_rect.left
-      offset_y2 = thing.rect.top - s.image_rot_rect.top
+      (target, enemy_type) = thing
+      offset_x2 = target.rect.left - s.image_rot_rect.left
+      offset_y2 = target.rect.top - s.image_rot_rect.top
 
       #this rectangle collision is messy
-      if s.image.get_rect().colliderect(thing.enemy_surf.get_rect()) and s.swing_mask.overlap(thing.enemy_mask,(offset_x2,offset_y2)):
-        if thing.is_invincible == False:
+      if s.image.get_rect().colliderect(target.enemy_surf.get_rect()) and s.swing_mask.overlap(target.enemy_mask,(offset_x2,offset_y2)):
+        if target.is_invincible == False:
           (damage, did_crit) = p.damage_roll()
-          thing.hp -= damage
-          thing.is_invincible = True
+          target.hp -= damage
+          target.is_invincible = True
 
           font = pygame.font.SysFont("Arial", 30)  
           if did_crit == True:
@@ -171,16 +173,16 @@ while running:
           else:
             text_surf = font.render(str(damage), True, (255, 255, 0, 255))
 
-          text_surf_rect = text_surf.get_rect(center = thing.get_xy())
+          text_surf_rect = text_surf.get_rect(center = target.get_xy())
           p.damages.append([text_surf, text_surf_rect, pygame.time.get_ticks()])
-          if thing.hp > 0:
-            per = thing.hp/thing.max_hp
-            thing.enemy_surf.fill(methods.color_grad(per))
-          elif thing.hp <= 0:
-            thing.hp = thing.max_hp
-            # thing.spawn()
+          if target.hp > 0:
+            per = target.hp/target.max_hp
+            target.enemy_surf.fill(methods.color_grad(per))
+          elif target.hp <= 0:
+            target.hp = target.max_hp
+            # target.spawn()
             splat_list.append([thing, pygame.time.get_ticks()])
-            thing.kill(enemy_list)
+            target.kill(enemy_list)
             p.kill_count += 1
             if p.kill_count % 50 == 0:
               p.damage += 1
@@ -191,25 +193,30 @@ while running:
   # splat
   for x in splat_list:
     (thing , time) = x
+    (target, enemy_type) = thing
     t = pygame.time.get_ticks() - time
     if t > 1000:
       splat_list.remove(x)
-      # thing.spawn()
-      # thing.update()
+
+      # target.spawn()
+      # target.update()
       # enemy_list.append(thing)
+      # UPDATE THIS COMMENTED CODE
+
       pass
     else:
-      thing.splat_rect.center = (thing.get_xy())
+      target.splat_rect.center = (target.get_xy())
 
   # this is checking player collision and then moving the enemies 
   for thing in enemy_list:
-    offset_x = thing.rect.left - p.rect.left
-    offset_y = thing.rect.top - p.rect.top
-    if p.rect.colliderect(thing.rect) and p.player_mask.overlap(thing.enemy_mask,(offset_x,offset_y)):
+    (target, enemy_type) = thing
+    offset_x = target.rect.left - p.rect.left
+    offset_y = target.rect.top - p.rect.top
+    if p.rect.colliderect(target.rect) and p.player_mask.overlap(target.enemy_mask,(offset_x,offset_y)):
       p.set_color('cyan')
 
-    thing.move()
-    thing.update()
+    target.move()
+    target.update()
 
 
   # because we set color after the rotated image, we have to paint it one more time each frame.
@@ -220,16 +227,18 @@ while running:
   # RENDER YOUR GAME HERE
 
   for (thing, time) in splat_list:
-    globals.screen.blit(thing.splat_img, thing.splat_rect)
+    (target, enemy_type) = thing
+    globals.screen.blit(target.splat_img, target.splat_rect)
 
   # enemy health bars
   bar_width = 6
   for thing in enemy_list:
-    bar_xi = thing.get_x() - 30
-    bar_xf = thing.get_x() + 30
-    bar_yi = thing.get_y() + globals.size
-    bar_yf = thing.get_y() + globals.size
-    percent_hp = thing.hp / thing.max_hp
+    (target, enemy_type) = thing
+    bar_xi = target.get_x() - 30
+    bar_xf = target.get_x() + 30
+    bar_yi = target.get_y() + globals.size
+    bar_yf = target.get_y() + globals.size
+    percent_hp = target.hp / target.max_hp
     bar_length = bar_xf - bar_xi
     curr_health_x = bar_xi + percent_hp * bar_length
     pygame.draw.line(globals.screen, "black", (bar_xi - 2,bar_yi), (bar_xf + 2,bar_yf), bar_width + 4)
@@ -238,8 +247,8 @@ while running:
     # border, max, curr
 
 
-    globals.screen.blit(thing.enemy_surf,thing.rect.topleft)
-    pygame.draw.rect(globals.screen,"black",thing.rect, 1)
+    globals.screen.blit(target.enemy_surf,target.rect.topleft)
+    pygame.draw.rect(globals.screen,"black",target.rect, 1)
     # draw enemy then enemy outline
 
 

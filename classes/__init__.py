@@ -1,1 +1,1 @@
-__all__ = ['player', 'enemy', 'snake', 'swing']
+__all__ = ['player', 'enemy', 'smokey', 'snake', 'swing']

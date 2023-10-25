@@ -76,7 +76,7 @@ class Enemy():
       self.set_y(unit_vec[1] * self.speed + self.get_y())
 
   def kill(self, enemy_list):
-    enemy_list.remove(self)
+    enemy_list.remove((self, 'basic'))
 
   def update(self):
     self.rect.center = (self.get_xy())
