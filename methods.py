@@ -28,11 +28,11 @@ def make_enemies(num_to_make, enemy_count, enemy_list):
     target.spawn()
 
 
-# i want to pass in a list of specs, then ... the list to give the specs to the smokey
 def make_smokey(enemy_count, enemy_list):
   enemy_count.append(len(enemy_count))
+
+
   enemy_count[-1] = smokey.Smokey()
-  # put specs here ^
 
   enemy_list.append((enemy_count[-1], 'smokey'))
   (target, enemy_type) = enemy_list[-1]
@@ -45,6 +45,14 @@ def paint(main_image, color):
 
   copy_image = main_image.copy()
   copy_image.blit(colored_image,(0,0), special_flags = pygame.BLEND_MULT)
+  return copy_image
+
+def new_paint(main_image, color):
+  colored_image = pygame.Surface(main_image.get_size())
+  colored_image.fill(color)
+
+  copy_image = main_image.copy()
+  copy_image.blit(colored_image, (0,0), special_flags = pygame.BLEND_ADD)
   return copy_image
 
 def swing_trail(s, swing_alpha, timer, color):

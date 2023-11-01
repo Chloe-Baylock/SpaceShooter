@@ -28,6 +28,7 @@ enemy_list = []
 splat_list = []
 
 methods.make_enemies(5, enemy_count, enemy_list)
+methods.make_smokey(enemy_count, enemy_list)
 
 swing_group = pygame.sprite.Group()
 swing_group.add(s)
@@ -177,12 +178,13 @@ while running:
           p.damages.append([text_surf, text_surf_rect, pygame.time.get_ticks()])
           if target.hp > 0:
             per = target.hp/target.max_hp
-            target.enemy_surf.fill(methods.color_grad(per))
+            if enemy_type == 'basic':
+              target.enemy_surf.fill(methods.color_grad(per))
           elif target.hp <= 0:
             target.hp = target.max_hp
             # target.spawn()
             splat_list.append([thing, pygame.time.get_ticks()])
-            target.kill(enemy_list)
+            target.kill(enemy_type, enemy_list)
             p.kill_count += 1
             if p.kill_count % 50 == 0:
               p.damage += 1
@@ -228,7 +230,10 @@ while running:
 
   for (thing, time) in splat_list:
     (target, enemy_type) = thing
-    globals.screen.blit(target.splat_img, target.splat_rect)
+    img = target.splat_img
+    if enemy_type == 'smokey':
+      img = methods.new_paint(target.splat_img,(0,0,255))
+    globals.screen.blit(img, target.splat_rect)
 
   # enemy health bars
   bar_width = 6
