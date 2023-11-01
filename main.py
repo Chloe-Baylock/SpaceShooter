@@ -252,8 +252,11 @@ while running:
     # border, max, curr
 
 
-    globals.screen.blit(target.enemy_surf,target.rect.topleft)
-    pygame.draw.rect(globals.screen,"black",target.rect, 1)
+    if enemy_type == 'smokey':
+      globals.screen.blit(target.enemy_image,target.rect.topleft)
+    else:
+      globals.screen.blit(target.enemy_surf,target.rect.topleft)
+      pygame.draw.rect(globals.screen,"black",target.rect, 1)
     # draw enemy then enemy outline
 
 

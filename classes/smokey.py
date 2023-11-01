@@ -9,14 +9,15 @@ class Smokey(enemy.Enemy):
 
     self.speed = 3
 
-    self.enemy_surf = pygame.Surface((globals.size, globals.size))
+    self.enemy_image = pygame.image.load('sprites/smokey.png').convert_alpha()
+    self.enemy_surf = pygame.Surface(self.enemy_image.get_size())
     self.rect = self.enemy_surf.get_rect(center = (self.x,self.y))
     self.enemy_mask = pygame.mask.from_surface(self.enemy_surf)
 
     self.color = (0, 0, 255, 255)
 
 
-    self.enemy_surf.fill(self.color)
+    # self.enemy_surf.fill(self.color)
     self.point_x = random.randint(1, globals.width)
     self.point_y = random.randint(1, globals.height)
 
