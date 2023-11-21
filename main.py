@@ -26,6 +26,7 @@ s = swing.Swing(p)
 enemy_count = []
 enemy_list = []
 splat_list = []
+hit_list = [] # list of enemies recently hit for particle effects
 
 methods.make_enemies(5, enemy_count, enemy_list)
 methods.make_smokey(enemy_count, enemy_list)
@@ -161,6 +162,7 @@ while running:
       #this rectangle collision is messy
       if s.image.get_rect().colliderect(target.enemy_surf.get_rect()) and s.swing_mask.overlap(target.enemy_mask,(offset_x2,offset_y2)):
         if target.is_invincible == False:
+          hit_list.append([target,pygame.time.get_ticks()])
           (damage, did_crit) = p.damage_roll()
           target.hp -= damage
           target.is_invincible = True
@@ -189,6 +191,7 @@ while running:
             if p.kill_count % 50 == 0:
               p.damage += 1
               print(p.damage)
+          
 
   globals.screen.blit(s.image_rot, s.image_rot_rect)
 
@@ -234,6 +237,11 @@ while running:
     if enemy_type == 'smokey':
       img = methods.new_paint(target.splat_img,(0,0,255))
     globals.screen.blit(img, target.splat_rect)
+
+
+  for thing in hit_list:
+    (target, time) = thing
+    globals.screen.blit(target.particle_effect, (target.get_x() + 32,target.get_y()))
 
   # enemy health bars
   bar_width = 6
