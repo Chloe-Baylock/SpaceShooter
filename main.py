@@ -241,7 +241,8 @@ while running:
 
   for thing in hit_list:
     (target, time) = thing
-    globals.screen.blit(target.particle_effect, (target.get_x() + 32,target.get_y()))
+    if pygame.time.get_ticks() - time < 500:
+      globals.screen.blit(target.particle_effect, (target.get_x() + globals.size, target.get_y() - globals.size/2))
 
   # enemy health bars
   bar_width = 6
