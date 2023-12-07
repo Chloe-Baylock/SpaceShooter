@@ -29,6 +29,11 @@ class Enemy():
     self.splat_rect = self.splat_img.get_rect(center = (300,300))
 
     self.particle_effect = pygame.image.load('sprites/particle_effect.png').convert_alpha()
+    self.new_particle_effect = pygame.image.load('sprites/particle_effect.png').convert_alpha()
+
+    self.particle_x = 0
+    self.particle_y = 0
+
 
   def get_x(self):
     return self.x

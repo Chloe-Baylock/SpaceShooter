@@ -26,7 +26,7 @@ s = swing.Swing(p)
 enemy_count = []
 enemy_list = []
 splat_list = []
-hit_list = [] # list of enemies recently hit for particle effects
+particle_list = [] # list of enemies recently hit for particle effects
 
 methods.make_enemies(5, enemy_count, enemy_list)
 methods.make_smokey(enemy_count, enemy_list)
@@ -162,7 +162,9 @@ while running:
       #this rectangle collision is messy
       if s.image.get_rect().colliderect(target.enemy_surf.get_rect()) and s.swing_mask.overlap(target.enemy_mask,(offset_x2,offset_y2)):
         if target.is_invincible == False:
-          hit_list.append([target,pygame.time.get_ticks()])
+          particle_list.append([target,pygame.time.get_ticks()])
+          target.particle_x = target.get_x()
+          target.particle_y = target.get_y()
           (damage, did_crit) = p.damage_roll()
           target.hp -= damage
           target.is_invincible = True
@@ -239,10 +241,20 @@ while running:
     globals.screen.blit(img, target.splat_rect)
 
 
-  for thing in hit_list:
+  for thing in particle_list:
     (target, time) = thing
-    if pygame.time.get_ticks() - time < 500:
-      globals.screen.blit(target.particle_effect, (target.get_x() + globals.size, target.get_y() - globals.size/2))
+    time_diff = pygame.time.get_ticks() - time
+
+    if time_diff >= 1000:
+      particle_list.remove(thing)
+    elif time_diff > 750 :
+      target.new_particle_effect.set_alpha(75)
+    elif time_diff > 500 :
+      target.new_particle_effect.set_alpha(150)
+    elif time_diff > 250 :
+      target.new_particle_effect.set_alpha(200)
+
+    globals.screen.blit(target.new_particle_effect, (target.particle_x + time_diff/5, target.particle_y - globals.size/2))
 
   # enemy health bars
   bar_width = 6

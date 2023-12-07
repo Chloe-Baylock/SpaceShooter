@@ -55,6 +55,16 @@ def new_paint(main_image, color):
   copy_image.blit(colored_image, (0,0), special_flags = pygame.BLEND_ADD)
   return copy_image
 
+def new_alpha(main_image, alpha):
+  trans_image = pygame.Surface(main_image.get_size())
+  trans_image.fill((255,255,255))
+  trans_image.set_alpha(alpha)
+
+  copy_image = trans_image.copy()
+  copy_image.blit(trans_image,(0,0), special_flags= pygame.BLEND_MULT)
+
+  return copy_image
+
 def swing_trail(s, swing_alpha, timer, color):
   if timer >= 0 and timer <= 14:
     trail_alpha = math.radians(swing_alpha + timer * 8)
