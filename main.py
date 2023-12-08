@@ -4,13 +4,11 @@ from classes import *
 
 
 # TODO:
-# combo counter
-# sound effect
-# snake enemy
 # gas enemy
 # gas + base enemy collision
 # make enemy art
 # give animations
+# snake enemy
 # make sound effects
 # sword drawn later with everything else
 
@@ -108,6 +106,7 @@ while running:
 
   #stop swinging after 40 frames
   elif time_diff >= 40:
+    s.fading_combo_ls = [s.curr_combo, pygame.time.get_ticks()]
     s.curr_combo = 0
     p.set_is_swinging(False)
     for thing in enemy_list:
@@ -325,6 +324,18 @@ while running:
   text_surf_rect.right = globals.width + globals.size - 4
   text_surf_rect.bottom = globals.height + globals.size
   globals.screen.blit(text_surf, text_surf_rect)
+
+  [val, time] = s.fading_combo_ls
+  if val > 0:
+    tick_diff = pygame.time.get_ticks() - time
+    if tick_diff < 1500:
+      fade_font = pygame.font.SysFont("Arial", 45)
+      fading_text_surf = fade_font.render(f"{val}", True, (0, 100, 255))
+      fading_rect = fading_text_surf.get_rect()
+      fading_rect.right = globals.width + globals.size - 20
+      fading_rect.bottom = globals.height + globals.size - 20
+      globals.screen.blit(fading_text_surf, (fading_rect.left, fading_rect.top - tick_diff/30))
+      
 
 
   # flip() the display to put your work on screen
