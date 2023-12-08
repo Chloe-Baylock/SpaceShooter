@@ -4,7 +4,6 @@ from classes import *
 
 
 # TODO:
-# sword drawn later with everything else
 # combo counter
 # sound effect
 # snake enemy
@@ -13,6 +12,7 @@ from classes import *
 # make enemy art
 # give animations
 # make sound effects
+# sword drawn later with everything else
 
 # Bug fixes
 # s.frame_val is different on a kill?
@@ -108,6 +108,7 @@ while running:
 
   #stop swinging after 40 frames
   elif time_diff >= 40:
+    s.curr_combo = 0
     p.set_is_swinging(False)
     for thing in enemy_list:
       (target, enemy_type) = thing
@@ -174,6 +175,9 @@ while running:
           (damage, did_crit) = p.damage_roll()
           target.hp -= damage
           target.is_invincible = True
+
+          s.curr_combo += 1
+          s.max_combo = max(s.curr_combo, s.max_combo)
 
           font = pygame.font.SysFont("Arial", 30)  
           if did_crit == True:
@@ -287,8 +291,6 @@ while running:
     if enemy_type == 'smokey':
       globals.screen.blit(target.enemy_image,target.rect.topleft)
     elif enemy_type == 'basic' and target.is_blinking == True:
-      # white_surf = methods.paint(target.enemy_surf, (255,255,255))
-      # globals.screen.blit(white_surf,target.rect.topleft)
       white_surf = target.enemy_surf.copy()
       white_surf.fill((255,255,255))
       globals.screen.blit(white_surf,target.rect.topleft)
@@ -314,6 +316,15 @@ while running:
       globals.screen.blit(text, (text_rect.left, y_val))
     else:
       p.damages.remove(text_ls)
+
+  # combo text
+  font = pygame.font.SysFont("Arial", 30)
+  text = f"Combo: {s.curr_combo}"
+  text_surf = font.render(text, True, (0, 0, 0, 255))
+  text_surf_rect = text_surf.get_rect()
+  text_surf_rect.right = globals.width + globals.size - 4
+  text_surf_rect.bottom = globals.height + globals.size
+  globals.screen.blit(text_surf, text_surf_rect)
 
 
   # flip() the display to put your work on screen

@@ -21,6 +21,10 @@ class Swing (pygame.sprite.Sprite):
     self.deg8_rot = pygame.image.load('sprites/deg8.png').convert_alpha()
     self.deg8_rot_rect = self.deg8_rot.get_rect(center = (300,300))
 
+    self.is_combo = False
+    self.curr_combo = 0
+    self.max_combo = 0
+
 
   def get_center(self):
     pass
