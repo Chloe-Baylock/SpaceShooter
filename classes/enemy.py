@@ -35,6 +35,8 @@ class Enemy():
     self.particle_y = 0
     self.particle_alpha = 0
 
+    self.is_blinking = False
+
 
   def get_x(self):
     return self.x

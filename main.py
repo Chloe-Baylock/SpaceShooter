@@ -4,7 +4,6 @@ from classes import *
 
 
 # TODO:
-# get sword angle to determin where particles fly
 # sword drawn later with everything else
 # combo counter
 # sound effect
@@ -68,9 +67,6 @@ while running:
           pass
         if event.key == pygame.K_ESCAPE:
           running = False
-
-  if s.is_hold:
-    p.set_is_swinging(False)
 
   globals.screen.fill("gray")
   p.set_color('white')
@@ -168,19 +164,13 @@ while running:
       #this rectangle collision is messy
       if s.image.get_rect().colliderect(target.enemy_surf.get_rect()) and s.swing_mask.overlap(target.enemy_mask,(offset_x2,offset_y2)):
         if target.is_invincible == False:
-
-          s.is_hold = True
           target.particle_alpha = -(s.alpha + s.frame_val) - 90
-          print(target.particle_alpha)
-          print(s.frame_val)
-          s.hold_rot = s.image_rot
-          s.hold_rect = s.image_rot_rect
-          
-
-
           particle_list.append([target,pygame.time.get_ticks()])
           target.particle_x = target.get_x()
           target.particle_y = target.get_y()
+          target.is_blinking = True
+          # particles
+
           (damage, did_crit) = p.damage_roll()
           target.hp -= damage
           target.is_invincible = True
@@ -240,9 +230,7 @@ while running:
     if p.rect.colliderect(target.rect) and p.player_mask.overlap(target.enemy_mask,(offset_x,offset_y)):
       p.set_color('cyan')
 
-    # target.move()
-    target.x = 500
-    target.y = 500
+    target.move()
     target.update()
 
 
@@ -298,6 +286,14 @@ while running:
 
     if enemy_type == 'smokey':
       globals.screen.blit(target.enemy_image,target.rect.topleft)
+    elif enemy_type == 'basic' and target.is_blinking == True:
+      # white_surf = methods.paint(target.enemy_surf, (255,255,255))
+      # globals.screen.blit(white_surf,target.rect.topleft)
+      white_surf = target.enemy_surf.copy()
+      white_surf.fill((255,255,255))
+      globals.screen.blit(white_surf,target.rect.topleft)
+      pygame.draw.rect(globals.screen,"black",target.rect, 1)
+      target.is_blinking = False
     else:
       globals.screen.blit(target.enemy_surf,target.rect.topleft)
       pygame.draw.rect(globals.screen,"black",target.rect, 1)
@@ -307,10 +303,6 @@ while running:
   pygame.draw.rect(globals.screen, "white", (0,0,globals.width+globals.size * 2,globals.height+globals.size * 2),globals.size)
   globals.screen.blit(player_image,p.image_rot_rect.topleft)
   # ^ walls, player
-
-  if s.is_hold:
-    globals.screen.blit(s.hold_rot, s.hold_rect)
-  # holding sword still
 
 
   # damage text

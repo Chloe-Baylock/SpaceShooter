@@ -34,3 +34,5 @@ class Smokey(enemy.Enemy):
     self.particle_x = 0
     self.particle_y = 0
     self.particle_alpha = 0
+
+    self.is_blinking = False
