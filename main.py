@@ -237,7 +237,7 @@ while running:
     (target, enemy_type) = thing
     img = target.splat_img
     if enemy_type == 'smokey':
-      img = methods.new_paint(target.splat_img,(0,0,255))
+      img = methods.add_paint(target.splat_img,(0,0,255))
     globals.screen.blit(img, target.splat_rect)
 
 
@@ -245,17 +245,18 @@ while running:
     (target, time) = thing
     time_diff = pygame.time.get_ticks() - time
 
-    if time_diff >= 1000:
+    if time_diff >= 500:
       particle_list.remove(thing)
-    elif time_diff > 750 :
+    elif time_diff > 375:
       target.new_particle_effect.set_alpha(75)
-    elif time_diff > 500 :
+    elif time_diff > 250:
       target.new_particle_effect.set_alpha(150)
-    elif time_diff > 250 :
+    elif time_diff > 125:
       target.new_particle_effect.set_alpha(200)
-
-    globals.screen.blit(target.new_particle_effect, (target.particle_x + time_diff/5, target.particle_y - globals.size/2))
-
+    val = -time_diff * time_diff/2000 / 16 + time_diff/8
+    target.new_particle_effect = methods.add_paint(target.new_particle_effect, (255,255,255))
+    target.new_particle_effect = methods.paint(target.new_particle_effect, target.color)
+    globals.screen.blit(target.new_particle_effect, (target.particle_x + val, target.particle_y - globals.size/2))
   # enemy health bars
   bar_width = 6
   for thing in enemy_list:

@@ -47,7 +47,7 @@ def paint(main_image, color):
   copy_image.blit(colored_image,(0,0), special_flags = pygame.BLEND_MULT)
   return copy_image
 
-def new_paint(main_image, color):
+def add_paint(main_image, color):
   colored_image = pygame.Surface(main_image.get_size())
   colored_image.fill(color)
 
