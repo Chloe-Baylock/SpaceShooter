@@ -109,8 +109,7 @@ class Player():
     if random.randint(1, 100) <= self.crit_chance:
       roll *= 2
       did_crit = True
-    return (0, False)
-    # return (roll, did_crit)
+    return (roll, did_crit)
 
   def update(self):
     self.rect.center = (self.get_x(),self.get_y())

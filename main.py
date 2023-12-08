@@ -69,6 +69,8 @@ while running:
         if event.key == pygame.K_ESCAPE:
           running = False
 
+  if s.is_hold:
+    p.set_is_swinging(False)
 
   globals.screen.fill("gray")
   p.set_color('white')
@@ -166,9 +168,16 @@ while running:
       #this rectangle collision is messy
       if s.image.get_rect().colliderect(target.enemy_surf.get_rect()) and s.swing_mask.overlap(target.enemy_mask,(offset_x2,offset_y2)):
         if target.is_invincible == False:
-          target.particle_alpha = s.alpha + s.frame_val
-          # print(target.particle_alpha)
+
+          s.is_hold = True
+          target.particle_alpha = -(s.alpha + s.frame_val) - 90
+          print(target.particle_alpha)
           print(s.frame_val)
+          s.hold_rot = s.image_rot
+          s.hold_rect = s.image_rot_rect
+          
+
+
           particle_list.append([target,pygame.time.get_ticks()])
           target.particle_x = target.get_x()
           target.particle_y = target.get_y()
@@ -298,6 +307,10 @@ while running:
   pygame.draw.rect(globals.screen, "white", (0,0,globals.width+globals.size * 2,globals.height+globals.size * 2),globals.size)
   globals.screen.blit(player_image,p.image_rot_rect.topleft)
   # ^ walls, player
+
+  if s.is_hold:
+    globals.screen.blit(s.hold_rot, s.hold_rect)
+  # holding sword still
 
 
   # damage text
