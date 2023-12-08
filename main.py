@@ -4,6 +4,7 @@ from classes import *
 
 
 # TODO:
+# get sword angle to determin where particles fly
 # sword drawn later with everything else
 # combo counter
 # sound effect
@@ -13,6 +14,9 @@ from classes import *
 # make enemy art
 # give animations
 # make sound effects
+
+# Bug fixes
+# s.frame_val is different on a kill?
 
 pygame.init()
 clock = pygame.time.Clock()
@@ -162,6 +166,9 @@ while running:
       #this rectangle collision is messy
       if s.image.get_rect().colliderect(target.enemy_surf.get_rect()) and s.swing_mask.overlap(target.enemy_mask,(offset_x2,offset_y2)):
         if target.is_invincible == False:
+          target.particle_alpha = s.alpha + s.frame_val
+          # print(target.particle_alpha)
+          print(s.frame_val)
           particle_list.append([target,pygame.time.get_ticks()])
           target.particle_x = target.get_x()
           target.particle_y = target.get_y()
@@ -183,7 +190,9 @@ while running:
           if target.hp > 0:
             per = target.hp/target.max_hp
             if enemy_type == 'basic':
-              target.enemy_surf.fill(methods.color_grad(per))
+              col = methods.color_grad(per)
+              target.enemy_surf.fill(col)
+              target.color = col
           elif target.hp <= 0:
             target.hp = target.max_hp
             # target.spawn()
@@ -222,7 +231,9 @@ while running:
     if p.rect.colliderect(target.rect) and p.player_mask.overlap(target.enemy_mask,(offset_x,offset_y)):
       p.set_color('cyan')
 
-    target.move()
+    # target.move()
+    target.x = 500
+    target.y = 500
     target.update()
 
 
@@ -254,9 +265,11 @@ while running:
     elif time_diff > 125:
       target.new_particle_effect.set_alpha(200)
     val = -time_diff * time_diff/2000 / 16 + time_diff/8
+    particle_x = target.particle_x + val * math.cos(math.radians(target.particle_alpha))
+    particle_y = target.particle_y + val * math.sin(math.radians(target.particle_alpha))
     target.new_particle_effect = methods.add_paint(target.new_particle_effect, (255,255,255))
-    target.new_particle_effect = methods.paint(target.new_particle_effect, target.color)
-    globals.screen.blit(target.new_particle_effect, (target.particle_x + val, target.particle_y - globals.size/2))
+    target.new_particle_effect = methods.paint(target.new_particle_effect, (0,0,255))
+    globals.screen.blit(target.new_particle_effect, (particle_x, particle_y - globals.size/2))
   # enemy health bars
   bar_width = 6
   for thing in enemy_list:
@@ -304,6 +317,7 @@ while running:
   globals.ticks += 1
 
   # clock.tick(60)  # limits Fglobals.size to 60
-  dt = clock.tick(60) / 1000
+  dt = clock.tick(60)
+  # dt = clock.tick(60) / 1000
 
 pygame.quit()
