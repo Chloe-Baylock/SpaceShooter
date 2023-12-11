@@ -213,8 +213,13 @@ while running:
     (thing , time) = x
     (target, enemy_type) = thing
     t = pygame.time.get_ticks() - time
-    if t > 1000:
+    duration = 1000
+    if enemy_type == 'smokey':
+      duration = 5000
+    if t > duration:
       splat_list.remove(x)
+      if enemy_type == 'smokey':
+        target.splat_switch = 0
 
       # target.spawn()
       # target.update()
@@ -248,8 +253,19 @@ while running:
     (target, enemy_type) = thing
     img = target.splat_img
     if enemy_type == 'smokey':
-      img = methods.add_paint(target.splat_img,(0,0,255))
-    globals.screen.blit(img, target.splat_rect)
+      time_diff = pygame.time.get_ticks() - time
+      if time_diff < 500:
+        target.splat_frame = 0
+      elif time_diff < 1000:
+        target.splat_frame = 1
+      else:
+        target.splat_frame = 2 + target.splat_switch % 2
+        if time_diff > 1000 + target.splat_goal:
+          target.splat_switch += 1
+          target.splat_goal += 750
+      globals.screen.blit(img, target.splat_rect, [target.splat_frame * 64, 0, 64, 64])
+    elif enemy_type == 'basic':
+      globals.screen.blit(img, target.splat_rect)
 
 
   for thing in particle_list:

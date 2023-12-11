@@ -25,11 +25,15 @@ class Smokey(enemy.Enemy):
     self.hp = self.max_hp
     self.is_invincible = False
 
-    self.splat_img = pygame.image.load('sprites/splat.png').convert_alpha()
+    self.splat_img = pygame.image.load('sprites/gas.png').convert_alpha()
     self.splat_rect = self.splat_img.get_rect(center = (300,300))
+    self.splat_frame = 0
+    self.splat_switch = 0
+    self.splat_goal = 750
   
     self.particle_effect = pygame.image.load('sprites/particle_2.png').convert_alpha()
     self.new_particle_effect = pygame.image.load('sprites/particle_2.png').convert_alpha()
+    self.new_particle_effect_3 = pygame.image.load('sprites/particle_3.png').convert_alpha()
 
     self.particle_x = 0
     self.particle_y = 0
