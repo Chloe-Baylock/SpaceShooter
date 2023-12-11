@@ -206,7 +206,8 @@ while running:
               print(p.damage)
           
 
-  globals.screen.blit(s.image_rot, s.image_rot_rect)
+  # globals.screen.blit(s.image_rot, s.image_rot_rect)
+  # where sword swing was before moved
 
   # splat
   for x in splat_list:
@@ -228,7 +229,10 @@ while running:
 
       pass
     else:
-      target.splat_rect.center = (target.get_xy())
+      if enemy_type == 'smokey':
+        target.splat_rect.center = (target.get_x() + 32 * 3, target.get_y())
+      else:
+        target.splat_rect.center = (target.get_xy())
 
   # this is checking player collision and then moving the enemies 
   for thing in enemy_list:
@@ -252,19 +256,7 @@ while running:
   for (thing, time) in splat_list:
     (target, enemy_type) = thing
     img = target.splat_img
-    if enemy_type == 'smokey':
-      time_diff = pygame.time.get_ticks() - time
-      if time_diff < 500:
-        target.splat_frame = 0
-      elif time_diff < 1000:
-        target.splat_frame = 1
-      else:
-        target.splat_frame = 2 + target.splat_switch % 2
-        if time_diff > 1000 + target.splat_goal:
-          target.splat_switch += 1
-          target.splat_goal += 750
-      globals.screen.blit(img, target.splat_rect, [target.splat_frame * 64, 0, 64, 64])
-    elif enemy_type == 'basic':
+    if enemy_type == 'basic':
       globals.screen.blit(img, target.splat_rect)
 
 
@@ -324,8 +316,26 @@ while running:
 
 
   pygame.draw.rect(globals.screen, "white", (0,0,globals.width+globals.size * 2,globals.height+globals.size * 2),globals.size)
+  globals.screen.blit(s.image_rot, s.image_rot_rect)
   globals.screen.blit(player_image,p.image_rot_rect.topleft)
-  # ^ walls, player
+
+  # ^ walls, sword, player
+
+  for (thing, time) in splat_list:
+    (target, enemy_type) = thing
+    img = target.splat_img
+    if enemy_type == 'smokey':
+      time_diff = pygame.time.get_ticks() - time
+      if time_diff < 500:
+        target.splat_frame = 0
+      elif time_diff < 1000:
+        target.splat_frame = 1
+      else:
+        target.splat_frame = 2 + target.splat_switch % 2
+        if time_diff > 1000 + target.splat_goal:
+          target.splat_switch += 1
+          target.splat_goal += 750
+      globals.screen.blit(img, target.splat_rect, [target.splat_frame * 64, 0, 64, 64])
 
 
   # damage text
