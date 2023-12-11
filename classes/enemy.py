@@ -30,6 +30,7 @@ class Enemy():
 
     self.particle_effect = pygame.image.load('sprites/particle_2.png').convert_alpha()
     self.new_particle_effect = pygame.image.load('sprites/particle_2.png').convert_alpha()
+    self.new_particle_effect_3 = pygame.image.load('sprites/particle_3.png').convert_alpha()
 
     self.particle_x = 0
     self.particle_y = 0

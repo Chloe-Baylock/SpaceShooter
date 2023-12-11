@@ -261,15 +261,21 @@ while running:
     elif time_diff > 375:
       target.new_particle_effect.set_alpha(75)
     elif time_diff > 250:
+      target.new_particle_effect = target.new_particle_effect_3
       target.new_particle_effect.set_alpha(150)
     elif time_diff > 125:
       target.new_particle_effect.set_alpha(200)
+    else:
+      target.new_particle_effect = target.particle_effect
+
     val = -time_diff * time_diff/2000 / 16 + time_diff/8
     particle_x = target.particle_x + val * math.cos(math.radians(target.particle_alpha))
     particle_y = target.particle_y + val * math.sin(math.radians(target.particle_alpha))
     target.new_particle_effect = methods.add_paint(target.new_particle_effect, (255,255,255))
     target.new_particle_effect = methods.paint(target.new_particle_effect, (0,0,255))
+    
     globals.screen.blit(target.new_particle_effect, (particle_x, particle_y - globals.size/2))
+
   # enemy health bars
   bar_width = 6
   for thing in enemy_list:
